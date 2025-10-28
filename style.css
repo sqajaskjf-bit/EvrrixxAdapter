@@ -1,19 +1,18 @@
-/* Dark winter theme + aurora + neon RGB frame + staged reveal
-   Responsive PC (avatar left, info right, player below)
-   Mobile: single column (avatar top, info, socials, player)
+/* Dark winter theme + aurora + neon RGB frame + staged reveal + responsive layout
+   Keep avatar local file photo_2025-10-28_18-09-54.jpg in same folder
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
 :root{
   --bg:#02020a;
-  --card-bg: rgba(10,8,20,0.6);
+  --card-bg: rgba(10,8,20,0.62);
   --muted: rgba(255,255,255,0.65);
   --neon1: #7afcff;
   --neon2: #c77bff;
+  --glass-border: rgba(255,255,255,0.04);
 }
 
-/* base */
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -22,7 +21,7 @@ a{color:inherit;text-decoration:none}
 .aurora{
   position:fixed; inset:-10%; z-index:0; pointer-events:none; opacity:0; transition:opacity 1s ease;
   background:
-    radial-gradient(900px 320px at 10% 18%, rgba(122,58,237,0.12), transparent 8%),
+    radial-gradient(900px 340px at 10% 18%, rgba(122,58,237,0.12), transparent 8%),
     radial-gradient(700px 260px at 90% 80%, rgba(58,199,230,0.08), transparent 8%),
     linear-gradient(180deg, rgba(5,2,10,0.8), rgba(2,0,8,0.98));
   filter: blur(28px) saturate(120%);
@@ -40,25 +39,24 @@ a{color:inherit;text-decoration:none}
 .view-count{ color:var(--neon1); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.035); font-weight:700; background: linear-gradient(90deg, rgba(122,252,255,0.02), rgba(199,123,255,0.01))}
 
 /* overlay */
-.overlay{ position:fixed; inset:0; z-index:120; display:flex; align-items:center; justify-content:center; flex-direction:column; background: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.9)); color:var(--neon1); cursor:pointer }
-.overlay .overlay-cta{ padding:16px 28px; font-size:22px; border-radius:12px; border:2px solid var(--neon1); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008)); box-shadow:0 10px 50px rgba(0,0,0,0.5) }
+.overlay{ position:fixed; inset:0; z-index:120; display:flex; align-items:center; justify-content:center; flex-direction:column; background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.92)); color:var(--neon1); cursor:pointer }
+.overlay .overlay-cta{ padding:14px 26px; font-size:22px; border-radius:12px; border:2px solid var(--neon1); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008)); box-shadow:0 10px 50px rgba(0,0,0,0.5) }
 .overlay .overlay-sub{ margin-top:10px; color:var(--muted); font-size:13px }
 .overlay.fade-out{ opacity:0; transition:opacity .32s ease }
 
-/* main wrap */
+/* wrapper & card */
 .wrap{ position:relative; z-index:30; display:flex; align-items:center; justify-content:center; width:100%; min-height:100vh; padding:40px; transition:opacity .6s ease }
 .hidden{ opacity:0; pointer-events:none }
 
-/* card */
 .card{
   display:flex; gap:28px; width:980px; max-width:95%; background:var(--card-bg); border-radius:18px; padding:28px; position:relative;
   box-shadow: 0 40px 90px rgba(0,0,0,0.6);
-  border:1px solid rgba(255,255,255,0.04);
+  border:1px solid var(--glass-border);
   backdrop-filter: blur(12px);
   transition: transform .35s ease, box-shadow .35s ease;
 }
 
-/* neon RGB frame via pseudo-element */
+/* neon RGB frame */
 .card::before{
   content:""; position:absolute; inset:-2px; border-radius:20px; z-index:-1; pointer-events:none;
   background: linear-gradient(90deg, rgba(122,252,255,0.12), rgba(199,123,255,0.12), rgba(122,252,255,0.12));
@@ -73,7 +71,7 @@ a{color:inherit;text-decoration:none}
 .avatar-wrap{ padding:8px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008)); border:1px solid rgba(255,255,255,0.02) }
 .avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; border:4px solid rgba(255,255,255,0.04); box-shadow:0 12px 40px rgba(122,252,255,0.04); transition:transform .25s ease }
 .avatar:hover{ transform:translateY(-4px) scale(1.03) }
-.profile-info{ text-align:center }
+.info{ text-align:center }
 .nick{ font-weight:800; font-size:20px }
 .meta{ color:var(--muted); font-weight:600; margin-top:6px }
 .geo-link{ color:var(--neon1); font-weight:600 }
@@ -130,6 +128,8 @@ body.device-phone .avatar{ width:84px; height:84px }
 body.device-phone .right{ width:100% }
 body.device-phone .neon-buttons{ order:99; justify-content:flex-start }
 body.device-phone .progress-wrap{ width:100% }
+
+/* responsive small */
 @media (max-width:720px){
   .card{ width:92%; padding:20px; gap:18px; flex-direction:column }
   .left{ flex-direction:row; align-items:center; gap:12px }
@@ -138,8 +138,6 @@ body.device-phone .progress-wrap{ width:100% }
   .volume-slider{ width:96px }
 }
 
-/* hover lift */
+/* small helpers */
 .card:hover{ transform:translateY(-6px) }
-
-/* small text resets */
 .sr-only{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
