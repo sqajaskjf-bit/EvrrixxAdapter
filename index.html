@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Evrrixx — profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="overlay">Click to continue ❄️</div>
+
+<div class="snow" id="snow"></div>
+
+<div class="wrap" id="card">
+  <img class="avatar" src="images/photo_2025-10-28_18-09-54.jpg" alt="avatar">
+  <div class="nick">Evrrixx</div>
+  <div class="meta">OSU player • Lviv</div>
+
+  <div class="neon-buttons">
+    <a class="btn" href="https://discord.com/evrrixx" title="Discord" target="_blank">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg" width="22" height="22">
+    </a>
+    <a class="btn" href="https://t.me/Evrrixx" title="Telegram" target="_blank">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg" width="22" height="22">
+    </a>
+    <a class="btn" href="https://www.tiktok.com/@svalipchik" title="TikTok" target="_blank">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" width="22" height="22">
+    </a>
+    <a class="btn" href="https://osu.ppy.sh/users/38462434" title="Osu" target="_blank">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/osu.svg" width="22" height="22">
+    </a>
+  </div>
+
+  <div class="player">
+    <div class="playbtn" id="play">▶</div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+</div>
+
+<script>
+// snow animation
+const snowContainer = document.getElementById('snow');
+for(let i=0;i<80;i++){
+  const s=document.createElement('div');
+  s.className='snowflake';
+  s.textContent='❄';
+  s.style.left=Math.random()*100+'%';
+  s.style.animationDuration=5+Math.random()*15+'s';
+  s.style.fontSize=8+Math.random()*14+'px';
+  s.style.animationDelay=Math.random()*-20+'s';
+  snowContainer.appendChild(s);
+}
+
+// audio setup
+const audio = new Audio("https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/");
+audio.preload = 'metadata';
+const playBtn=document.getElementById('play');
+const bar=document.getElementById('bar');
+let playing=false;
+
+playBtn.onclick=()=>{
+  if(!playing){
+    audio.play();
+    playBtn.textContent='⏸';
+    playing=true;
+  } else {
+    audio.pause();
+    playBtn.textContent='▶';
+    playing=false;
+  }
+};
+audio.addEventListener('timeupdate',()=>{
+  const pct=(audio.currentTime/audio.duration)*100;
+  bar.style.width=pct+'%';
+});
+
+// overlay behavior
+const overlay=document.getElementById('overlay');
+const card=document.getElementById('card');
+overlay.addEventListener('click',()=>{
+  overlay.style.opacity='0';
+  setTimeout(()=>overlay.remove(),800);
+  card.classList.add('visible');
+  audio.play();
+  playing=true;
+  playBtn.textContent='⏸';
+});
+</script>
+</body>
+</html>
