@@ -46,6 +46,7 @@ a{color:inherit}
 .overlay .overlay-inner{ text-align:center }
 .overlay-text{ font-weight:800; font-size:22px; padding:14px 22px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:0 8px 40px rgba(122,252,255,0.02) }
 .overlay-sub{ margin-top:10px; color:var(--muted); font-size:13px }
+.overlay.fade-out{ opacity:0; transition:opacity .32s ease }
 
 /* wrap & card */
 .wrap{ position:relative; z-index:30; display:flex; align-items:center; justify-content:center; width:100%; min-height:100vh; padding:40px; transition:opacity .6s ease}
@@ -66,6 +67,7 @@ a{color:inherit}
   background: linear-gradient(90deg, rgba(122,252,255,0.12), rgba(199,123,255,0.12), rgba(122,252,255,0.12));
   filter: blur(18px); opacity:0.85;
   animation: rgbShift 6s linear infinite, pulseBorder 3.5s ease-in-out infinite;
+  background-size: 200% 200%;
 }
 @keyframes rgbShift{
   0%{ background-position:0% 50% }
@@ -117,39 +119,38 @@ a{color:inherit}
 .playbtn:hover{ transform:translateY(-4px) }
 .time{ font-weight:700; color:var(--muted); font-size:13px; min-width:92px; text-align:right }
 .volume{ display:flex; gap:8px; align-items:center }
-.volume-slider{ width:120px; }
+.volume-slider{ width:120px }
 
-/* staged reveal animation (elements appear one by one from bottom) */
+/* staged reveal animation (elements appear in sequence, bottom→up) */
 .card.reveal .left,
 .card.reveal .right,
 .card.reveal .player,
 .card.reveal .socials { opacity:0; transform: translateY(18px); }
 .card.reveal .left { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .15s forwards }
 .card.reveal .right { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .3s forwards }
-.card.reveal .player { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .55s forwards }
-.card.reveal .socials { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .4s forwards }
+.card.reveal .socials { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .45s forwards }
+.card.reveal .player { animation:revealUp .45s cubic-bezier(.2,.9,.2,1) .6s forwards }
 
 @keyframes revealUp{ to{ opacity:1; transform:none } }
 
-/* device-phone layout: single column */
+/* device-phone layout: single column + safe paddings */
 body.device-phone .card{ flex-direction:column; width:92%; padding:20px }
-body.device-phone .left{ width:100%; flex-direction:row; align-items:center; gap:14px }
+body.device-phone .left{ width:100%; flex-direction:row; align-items:center; gap:14px; justify-content:flex-start }
 body.device-phone .avatar{ width:84px; height:84px }
 body.device-phone .right{ width:100% }
 body.device-phone .socials{ order:99; justify-content:center }
 
-/* small screens */
+/* responsive small */
 @media (max-width:720px){
   .card{ width:92%; padding:20px; gap:18px; flex-direction:column }
-  body.device-phone .card{ padding:16px }
-  .left{ width:100%; flex-direction:row; align-items:center; gap:12px }
+  .left{ flex-direction:row; align-items:center; gap:12px }
   .avatar{ width:84px; height:84px }
   .cover{ width:64px; height:64px }
   .volume-slider{ width:96px }
 }
 
-/* small visual adjustments */
+/* hover lift */
 .card:hover{ transform:translateY(-6px) }
 
-/* cover playing state (pulse glow) */
+/* cover playing state */
 .cover.playing{ box-shadow: 0 0 28px rgba(122,252,255,0.22), 0 14px 40px rgba(122,252,255,0.06) }
