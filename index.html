@@ -1,96 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Evrrixx — profile</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evrrixx | Bio</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<div id="overlay">Click to continue ❄️</div>
 
-<div class="snow" id="snow"></div>
+  <div id="overlay">Click to continue</div>
 
-<div class="wrap" id="card">
-  <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar">
-  <div class="nick">Evrrixx</div>
-  <div class="meta">OSU player • Lviv</div>
+  <div class="wrap" id="main">
+    <img src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar" class="avatar">
+    
+    <div class="nick">Evrrixx</div>
+    <div class="meta">OSU player • Lviv</div>
 
-  <div class="neon-buttons">
-    <a class="btn" href="https://discord.com/users/1379041675070148670" title="Discord" target="_blank">
-      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg" width="22" height="22">
-    </a>
-    <a class="btn" href="https://t.me/Evrrixx" title="Telegram" target="_blank">
-      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg" width="22" height="22">
-    </a>
-    <a class="btn" href="https://www.tiktok.com/@svalipchik" title="TikTok" target="_blank">
-      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" width="22" height="22">
-    </a>
-    <a class="btn" href="https://osu.ppy.sh/users/38462434" title="Osu" target="_blank">
-      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/osu.svg" width="22" height="22">
-    </a>
-  </div>
+    <div class="neon-buttons">
+      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn"><i class="fab fa-discord"></i></a>
+      <a href="https://t.me/Evrrixx" target="_blank" class="btn"><i class="fab fa-telegram-plane"></i></a>
+      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn"><i class="fab fa-tiktok"></i></a>
+      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn"><i class="fas fa-circle"></i></a>
+    </div>
 
-  <div class="player">
-    <img class="song-cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="cover">
-    <div class="song-info">
-      <div class="song-title">baby cute — универ</div>
+    <div class="player" id="player">
+      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover">
+      <div class="song-info">
+        <div class="song-title">baby cute — универ</div>
+        <div class="progress"><div class="bar" id="progress-bar"></div></div>
+      </div>
       <div class="controls">
-        <div class="playbtn" id="play">▶</div>
-        <div class="progress"><div class="bar" id="bar"></div></div>
+        <i id="play-btn" class="fas fa-play playbtn"></i>
       </div>
     </div>
+
+    <audio id="audio" src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" preload="auto"></audio>
   </div>
-</div>
 
-<script>
-// snow animation
-const snowContainer = document.getElementById('snow');
-for(let i=0;i<80;i++){
-  const s=document.createElement('div');
-  s.className='snowflake';
-  s.textContent='❄';
-  s.style.left=Math.random()*100+'%';
-  s.style.animationDuration=5+Math.random()*15+'s';
-  s.style.fontSize=8+Math.random()*14+'px';
-  s.style.animationDelay=Math.random()*-20+'s';
-  snowContainer.appendChild(s);
-}
+  <script>
+    const overlay = document.getElementById('overlay');
+    const main = document.getElementById('main');
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play-btn');
+    const player = document.getElementById('player');
+    const progressBar = document.getElementById('progress-bar');
 
-// audio setup
-const audio = new Audio("https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/");
-audio.preload = 'metadata';
-const playBtn=document.getElementById('play');
-const bar=document.getElementById('bar');
-let playing=false;
+    overlay.addEventListener('click', () => {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.style.display = 'none', 800);
+      main.classList.add('visible');
+      audio.play();
+      player.classList.add('playing');
+      playBtn.classList.replace('fa-play', 'fa-pause');
+    });
 
-playBtn.onclick=()=>{
-  if(!playing){
-    audio.play();
-    playBtn.textContent='⏸';
-    playing=true;
-  } else {
-    audio.pause();
-    playBtn.textContent='▶';
-    playing=false;
-  }
-};
-audio.addEventListener('timeupdate',()=>{
-  const pct=(audio.currentTime/audio.duration)*100;
-  bar.style.width=pct+'%';
-});
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.classList.replace('fa-play', 'fa-pause');
+        player.classList.add('playing');
+      } else {
+        audio.pause();
+        playBtn.classList.replace('fa-pause', 'fa-play');
+        player.classList.remove('playing');
+      }
+    });
 
-// overlay behavior
-const overlay=document.getElementById('overlay');
-const card=document.getElementById('card');
-overlay.addEventListener('click',()=>{
-  overlay.style.opacity='0';
-  setTimeout(()=>overlay.remove(),800);
-  card.classList.add('visible');
-  audio.play();
-  playing=true;
-  playBtn.textContent='⏸';
-});
-</script>
+    audio.addEventListener('timeupdate', () => {
+      const progress = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${progress}%`;
+    });
+
+    // создаём снег ❄️
+    const snowContainer = document.createElement('div');
+    document.body.appendChild(snowContainer);
+
+    function createSnowflake() {
+      const snowflake = document.createElement('div');
+      snowflake.classList.add('snowflake');
+      snowflake.textContent = '❄';
+      snowflake.style.left = Math.random() * 100 + 'vw';
+      snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+      snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+      snowflake.style.opacity = Math.random();
+      document.body.appendChild(snowflake);
+
+      setTimeout(() => {
+        snowflake.remove();
+      }, 10000);
+    }
+    setInterval(createSnowflake, 200);
+  </script>
+
 </body>
 </html>
