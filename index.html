@@ -1,169 +1,168 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evrrixx — Profile</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Экран приветствия -->
+  <div id="start-screen">
+    <div class="start-overlay">
+      <h1 class="start-text">Click to continue</h1>
+    </div>
+  </div>
+
+  <!-- Снег -->
   <canvas id="snow"></canvas>
 
-  <div class="top-right">
-    <div id="view-count" class="view-count">👁️ <span id="views">0</span> views</div>
+  <!-- Счётчик просмотров и переключатель -->
+  <div class="top-bar">
+    <div class="views">
+      <svg class="eye" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12z" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.2"/></svg>
+      <span id="viewCount">1</span>
+    </div>
+    <button id="modeToggle" class="mode-toggle" title="Switch mode">💻</button>
   </div>
 
-  <!-- Оверлей -->
-  <div id="overlay" class="overlay">
-    <div id="overlayBtn" class="overlay-cta">Click to continue</div>
-  </div>
-
-  <main class="card">
-    <aside class="left">
-      <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar">
-      <div class="nick">Evrrixx</div>
-      <div class="meta">
-        <a href="https://www.google.com/maps/place/Lviv" target="_blank" class="location">
-          <i class="fa-solid fa-location-dot"></i> Lviv
-        </a>
+  <!-- Основная карточка -->
+  <div class="container hidden">
+    <div class="profile-card">
+      <div class="avatar-section">
+        <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="Evrrixx Avatar">
+        <h1 class="nick">Evrrixx</h1>
+        <p class="rank">🌍 #1.1kk • Country #22k</p>
+        <p class="geo">
+          <a href="https://www.google.com/maps/place/Lviv" target="_blank" class="geo-link">
+            📍 Lviv
+          </a>
+        </p>
+        <div class="links">
+          <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" title="Discord">💬</a>
+          <a class="btn" href="https://t.me/Evrrixx" target="_blank" title="Telegram">📱</a>
+          <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" title="TikTok">🎵</a>
+          <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" title="Osu">⭕</a>
+        </div>
       </div>
-      <div class="osu-stats">🌍 World #1.1kk | 🇺🇦 Country #22k</div>
-      <div class="neon-buttons">
-        <a class="btn" href="https://discord.com/users/1379041675070148670"><i class="fa-brands fa-discord"></i></a>
-        <a class="btn" href="https://t.me/Evrrixx"><i class="fa-brands fa-telegram"></i></a>
-        <a class="btn" href="https://www.tiktok.com/@svalipchik"><i class="fa-brands fa-tiktok"></i></a>
-        <a class="btn" href="https://osu.ppy.sh/users/38462434"><i class="fa-solid fa-circle"></i></a>
-      </div>
-    </aside>
 
-    <section class="right">
-      <div class="nick-large">Evrrixx</div>
-      <p class="bio"><strong>OSU player</strong></p>
-
-      <!-- ПЛЕЕР -->
-      <div class="player">
-        <img id="cover" class="track-cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
-        <div class="player-body">
-          <div class="track-title">baby cute — универ</div>
-          <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
-          <div class="player-controls">
-            <button id="playBtn" class="control"><i class="fa-solid fa-play"></i></button>
-            <span class="time"><span id="currentTime">0:00</span> / <span id="totalTime">0:00</span></span>
-            <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8">
+      <div class="music-player">
+        <img class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="Cover">
+        <div class="controls">
+          <h3>baby cute — универ</h3>
+          <div class="progress-bar">
+            <div class="bar" id="progress"></div>
+          </div>
+          <div class="control-buttons">
+            <button id="playPause" class="play-btn">▶️</button>
+            <span id="time">00:00 / 00:00</span>
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.6" />
           </div>
         </div>
       </div>
-    </section>
-  </main>
-
-  <audio id="audio" preload="metadata">
-    <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
-  </audio>
+    </div>
+  </div>
 
   <script>
-    const overlay = document.getElementById('overlay');
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-    const progressBar = document.getElementById('progressBar');
-    const currentTimeEl = document.getElementById('currentTime');
-    const totalTimeEl = document.getElementById('totalTime');
-    const volumeSlider = document.getElementById('volume');
-    const viewCountEl = document.getElementById('views');
+    // === Музыка ===
+    const audio = new Audio("https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/");
+    const playPause = document.getElementById("playPause");
+    const progress = document.getElementById("progress");
+    const time = document.getElementById("time");
+    const volume = document.getElementById("volume");
 
-    function fmtTime(t) {
-      if (!isFinite(t)) return "0:00";
-      const m = Math.floor(t / 60);
-      const s = Math.floor(t % 60).toString().padStart(2, "0");
-      return `${m}:${s}`;
+    let playing = false;
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, "0")}`;
     }
 
-    overlay.addEventListener('click', async () => {
-      overlay.classList.add('hidden');
-      try {
-        await audio.play();
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } catch (err) {
-        console.log('Audio blocked', err);
-      }
-    });
-
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } else {
+    playPause.addEventListener("click", () => {
+      if (playing) {
         audio.pause();
-        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        playPause.textContent = "▶️";
+      } else {
+        audio.play();
+        playPause.textContent = "⏸️";
+      }
+      playing = !playing;
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+      time.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    });
+
+    volume.addEventListener("input", () => {
+      audio.volume = volume.value;
+    });
+
+    // === Автопауза при потере фокуса ===
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && playing) {
+        audio.pause();
+        playPause.textContent = "▶️";
+        playing = false;
       }
     });
 
-    audio.addEventListener('loadedmetadata', () => {
-      totalTimeEl.textContent = fmtTime(audio.duration);
-    });
-    audio.addEventListener('timeupdate', () => {
-      currentTimeEl.textContent = fmtTime(audio.currentTime);
-      progressBar.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-    });
-    volumeSlider.addEventListener('input', e => audio.volume = e.target.value);
-
-    // Реальный счётчик просмотров
-    fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
-      .then(res => res.json())
-      .then(data => viewCountEl.textContent = data.value.toLocaleString());
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) audio.pause();
+    // === Кнопка "Click to continue" ===
+    document.getElementById("start-screen").addEventListener("click", () => {
+      document.getElementById("start-screen").classList.add("hide");
+      document.querySelector(".container").classList.remove("hidden");
+      audio.play().catch(() => console.log("Autoplay blocked"));
+      playing = true;
+      playPause.textContent = "⏸️";
     });
 
-    /* СНЕГ */
-    const canvas = document.getElementById('snow');
-    const ctx = canvas.getContext('2d');
+    // === Счётчик просмотров (localStorage) ===
+    let views = localStorage.getItem("views_evrrixx") || 0;
+    views++;
+    localStorage.setItem("views_evrrixx", views);
+    document.getElementById("viewCount").textContent = views;
+
+    // === Переключение режима ===
+    const toggle = document.getElementById("modeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("mobile");
+      toggle.textContent = document.body.classList.contains("mobile") ? "📱" : "💻";
+    });
+
+    // === Снег ===
+    const canvas = document.getElementById("snow");
+    const ctx = canvas.getContext("2d");
     let w, h;
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
     resize();
-
-    const flakes = Array.from({length: 120}).map(() => ({
+    const flakes = Array.from({length: 120}, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
       r: Math.random() * 3 + 1,
       d: Math.random() + 1
     }));
-
     function drawSnow() {
-      ctx.clearRect(0,0,w,h);
+      ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = "rgba(255,255,255,0.8)";
       ctx.beginPath();
-      for (let f of flakes) {
-        ctx.moveTo(f.x, f.y);
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-      }
+      for (let f of flakes) ctx.moveTo(f.x, f.y), ctx.arc(f.x, f.y, f.r, 0, Math.PI*2, true);
       ctx.fill();
-      update();
+      updateSnow();
     }
-
     let angle = 0;
-    function update() {
-      angle += 0.01;
+    function updateSnow() {
+      angle += 0.001;
       for (let f of flakes) {
         f.y += Math.pow(f.d, 2) + 1;
         f.x += Math.sin(angle) * 2;
-        if (f.y > h) {
-          f.y = 0;
-          f.x = Math.random() * w;
-        }
+        if (f.y > h) { f.y = 0; f.x = Math.random() * w; }
       }
     }
-
-    function loop() {
-      drawSnow();
-      requestAnimationFrame(loop);
-    }
-    loop();
+    setInterval(drawSnow, 25);
   </script>
 </body>
 </html>
