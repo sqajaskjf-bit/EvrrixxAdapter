@@ -1,13 +1,13 @@
 /* Dark winter theme + aurora + neon RGB frame + staged reveal + responsive layout
-   Keep avatar local file photo_2025-10-28_18-09-54.jpg in same folder
+   Slightly darker background and stronger blur so card stands out more
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
 :root{
-  --bg:#02020a;
-  --card-bg: rgba(10,8,20,0.62);
-  --muted: rgba(255,255,255,0.65);
+  --bg:#04030a;
+  --card-bg: rgba(8,6,15,0.66);
+  --muted: rgba(255,255,255,0.68);
   --neon1: #7afcff;
   --neon2: #c77bff;
   --glass-border: rgba(255,255,255,0.04);
@@ -17,14 +17,14 @@
 html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-/* aurora (background glow) */
+/* aurora (bg glow) - hidden until reveal */
 .aurora{
-  position:fixed; inset:-10%; z-index:0; pointer-events:none; opacity:0; transition:opacity 1s ease;
+  position:fixed; inset:-12%; z-index:0; pointer-events:none; opacity:0; transition:opacity 1s ease;
   background:
-    radial-gradient(900px 340px at 10% 18%, rgba(122,58,237,0.12), transparent 8%),
-    radial-gradient(700px 260px at 90% 80%, rgba(58,199,230,0.08), transparent 8%),
-    linear-gradient(180deg, rgba(5,2,10,0.8), rgba(2,0,8,0.98));
-  filter: blur(28px) saturate(120%);
+    radial-gradient(1000px 360px at 10% 18%, rgba(100,58,237,0.14), transparent 8%),
+    radial-gradient(800px 300px at 90% 78%, rgba(58,199,230,0.09), transparent 8%),
+    linear-gradient(180deg, rgba(2,1,8,0.9), rgba(0,0,6,0.98));
+  filter: blur(34px) saturate(120%);
 }
 .aurora.visible{ opacity:1 }
 
@@ -32,27 +32,27 @@ a{color:inherit;text-decoration:none}
 #snow{ position:fixed; inset:0; z-index:1; pointer-events:none }
 
 /* top-right controls */
-.top-right{ position:fixed; top:12px; right:12px; display:flex; gap:10px; align-items:center; z-index:40 }
+.top-right{ position:fixed; top:12px; right:12px; display:flex; gap:10px; align-items:center; z-index:60 }
 .device-toggle{ display:flex; gap:6px; background: rgba(255,255,255,0.02); padding:6px; border-radius:10px; border:1px solid rgba(255,255,255,0.03) }
 .device-btn{ width:36px;height:36px; display:grid; place-items:center; border-radius:8px; background:transparent; color:#dfeeff; border:0; cursor:pointer }
 .device-btn.active{ background: linear-gradient(90deg, rgba(122,252,255,0.06), rgba(199,123,255,0.06)); transform:scale(1.03) }
 .view-count{ color:var(--neon1); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.035); font-weight:700; background: linear-gradient(90deg, rgba(122,252,255,0.02), rgba(199,123,255,0.01))}
 
 /* overlay */
-.overlay{ position:fixed; inset:0; z-index:120; display:flex; align-items:center; justify-content:center; flex-direction:column; background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(0,0,0,0.92)); color:var(--neon1); cursor:pointer }
-.overlay .overlay-cta{ padding:14px 26px; font-size:22px; border-radius:12px; border:2px solid var(--neon1); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008)); box-shadow:0 10px 50px rgba(0,0,0,0.5) }
+.overlay{ position:fixed; inset:0; z-index:120; display:flex; align-items:center; justify-content:center; flex-direction:column; background: linear-gradient(180deg, rgba(0,0,0,0.98), rgba(0,0,0,0.94)); color:var(--neon1); cursor:pointer }
+.overlay .overlay-cta{ padding:14px 28px; font-size:22px; border-radius:12px; border:2px solid var(--neon1); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008)); box-shadow:0 12px 60px rgba(0,0,0,0.6) }
 .overlay .overlay-sub{ margin-top:10px; color:var(--muted); font-size:13px }
 .overlay.fade-out{ opacity:0; transition:opacity .32s ease }
 
-/* wrapper & card */
+/* wrap & card */
 .wrap{ position:relative; z-index:30; display:flex; align-items:center; justify-content:center; width:100%; min-height:100vh; padding:40px; transition:opacity .6s ease }
 .hidden{ opacity:0; pointer-events:none }
 
 .card{
   display:flex; gap:28px; width:980px; max-width:95%; background:var(--card-bg); border-radius:18px; padding:28px; position:relative;
-  box-shadow: 0 40px 90px rgba(0,0,0,0.6);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.7);
   border:1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
   transition: transform .35s ease, box-shadow .35s ease;
 }
 
@@ -60,16 +60,16 @@ a{color:inherit;text-decoration:none}
 .card::before{
   content:""; position:absolute; inset:-2px; border-radius:20px; z-index:-1; pointer-events:none;
   background: linear-gradient(90deg, rgba(122,252,255,0.12), rgba(199,123,255,0.12), rgba(122,252,255,0.12));
-  filter: blur(18px); opacity:0.9; background-size:200% 200%;
+  filter: blur(20px); opacity:0.95; background-size:200% 200%;
   animation: rgbShift 6s linear infinite, pulseBorder 3.5s ease-in-out infinite;
 }
 @keyframes rgbShift{ 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-@keyframes pulseBorder{ 0%{ transform:scale(1); opacity:.9 } 50%{ transform:scale(1.015); opacity:1 } 100%{ transform:scale(1); opacity:.9 } }
+@keyframes pulseBorder{ 0%{ transform:scale(1); opacity:.95 } 50%{ transform:scale(1.02); opacity:1 } 100%{ transform:scale(1); opacity:.95 } }
 
 /* left column */
 .left{ width:260px; display:flex; flex-direction:column; gap:12px; align-items:center; }
 .avatar-wrap{ padding:8px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008)); border:1px solid rgba(255,255,255,0.02) }
-.avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; border:4px solid rgba(255,255,255,0.04); box-shadow:0 12px 40px rgba(122,252,255,0.04); transition:transform .25s ease }
+.avatar{ width:120px; height:120px; border-radius:999px; object-fit:cover; border:4px solid rgba(255,255,255,0.04); box-shadow:0 14px 50px rgba(122,252,255,0.05); transition:transform .25s ease }
 .avatar:hover{ transform:translateY(-4px) scale(1.03) }
 .info{ text-align:center }
 .nick{ font-weight:800; font-size:20px }
@@ -121,7 +121,7 @@ a{color:inherit;text-decoration:none}
 .card.reveal .player { animation:revealUp .55s cubic-bezier(.2,.9,.2,1) .68s forwards }
 @keyframes revealUp{ to{ opacity:1; transform:none } }
 
-/* device-phone: single column and compact card */
+/* device-phone: single column compact */
 body.device-phone .card{ flex-direction:column; width:92%; padding:20px }
 body.device-phone .left{ width:100%; flex-direction:row; align-items:center; gap:14px; justify-content:flex-start }
 body.device-phone .avatar{ width:84px; height:84px }
