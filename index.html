@@ -54,7 +54,6 @@
   </div>
 
   <script>
-    // --- Intro screen ---
     const intro = document.getElementById('intro-screen');
     const content = document.getElementById('content');
     const audio = document.getElementById('audio');
@@ -65,19 +64,21 @@
     const mute = document.getElementById('mute');
     let isPlaying = false;
 
-    intro.addEventListener('click', () => {
+    // ✅ Исправленный запуск — звук активируется сразу при клике
+    intro.addEventListener('click', async () => {
       intro.style.opacity = '0';
-      setTimeout(() => {
-        intro.style.display = 'none';
-        content.classList.remove('hidden');
-        content.classList.add('fade-in');
-        audio.play();
+      content.classList.remove('hidden');
+      content.classList.add('fade-in');
+      try {
+        await audio.play();
         isPlaying = true;
         playPause.innerHTML = '<i class="fa fa-pause"></i>';
-      }, 600);
+      } catch (err) {
+        console.warn('Autoplay prevented, click Play manually');
+      }
+      setTimeout(() => intro.style.display = 'none', 700);
     });
 
-    // --- Player controls ---
     playPause.addEventListener('click', () => {
       if (isPlaying) {
         audio.pause();
@@ -114,12 +115,12 @@
       if (document.hidden && !audio.paused) audio.pause();
     });
 
-    // --- View counter ---
+    // 👁️ Счётчик просмотров
     fetch('https://api.countapi.xyz/hit/evrrixx-site/views')
       .then(res => res.json())
       .then(data => document.getElementById('viewCount').textContent = data.value);
 
-    // --- Device switch ---
+    // 💻📱 Переключатель
     const pc = document.getElementById('switch-pc');
     const mobile = document.getElementById('switch-mobile');
 
