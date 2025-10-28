@@ -1,101 +1,363 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Evrrixx — profile</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evrrixx — profile</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="referrer" content="no-referrer">
 </head>
 <body>
 
-<div id="overlay"><div class="overlay-content"><h1>Click to continue</h1></div></div>
-<div class="snow"></div>
+  <!-- AURORA (background glow) -->
+  <div id="aurora" class="aurora" aria-hidden="true"></div>
 
-<header class="top-bar">
-  <div class="views">
-    <svg viewBox="0 0 24 24"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
-    <span id="views">1</span>
+  <!-- SNOW CANVAS -->
+  <canvas id="snow" aria-hidden="true"></canvas>
+
+  <!-- TOP: device toggle + views -->
+  <div class="top-right" role="region" aria-label="Controls">
+    <div class="device-toggle" role="tablist" aria-label="Display mode">
+      <button id="btn-pc" class="device-btn" title="PC view" aria-pressed="true" aria-label="Desktop view">💻</button>
+      <button id="btn-phone" class="device-btn" title="Mobile view" aria-pressed="false" aria-label="Mobile view">📱</button>
+    </div>
+    <div id="view-count" class="view-count" aria-live="polite">👁️ <span id="views">0</span></div>
   </div>
-  <button id="modeToggle" title="Switch mode">💻</button>
-</header>
 
-<main class="wrap">
-  <aside class="left">
-    <img class="avatar fade" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar">
-    <div class="nick fade">Evrrixx</div>
-    <div class="meta fade">
-      <a href="https://www.google.com/maps/place/Lviv" target="_blank">📍 Lviv</a>
+  <!-- OVERLAY - user must interact to allow audio -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" tabindex="0">
+    <div class="overlay-inner" role="button" aria-label="Start">
+      <div class="overlay-cta">Click to continue</div>
+      <div class="overlay-sub">Tap anywhere to reveal profile & start music</div>
     </div>
-    <div class="stats fade">🌍 World #1.1kk • 🇺🇦 Country #22k</div>
-    <div class="buttons fade">
-      <a href="https://discord.com/users/1379041675070148670" target="_blank">💬</a>
-      <a href="https://t.me/Evrrixx" target="_blank">📱</a>
-      <a href="https://www.tiktok.com/@svalipchik" target="_blank">🎵</a>
-      <a href="https://osu.ppy.sh/users/38462434" target="_blank">⭕</a>
-    </div>
-  </aside>
+  </div>
 
-  <section class="main fade">
-    <div class="player">
-      <img class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="cover">
-      <div class="controls">
-        <div class="meta-row">
-          <div class="track-info">
-            <div class="title">baby cute — универ</div>
-            <div class="subtitle">track</div>
+  <!-- MAIN WRAPPER (hidden until reveal) -->
+  <main id="wrap" class="wrap hidden" role="main" aria-label="Evrrixx profile card">
+    <article class="card" id="card" aria-live="polite">
+      <!-- LEFT: avatar + quick meta + socials -->
+      <aside class="left" id="leftCol">
+        <div class="avatar-wrap">
+          <!-- local avatar file -->
+          <img id="avatar" class="avatar" src="photo_2025-10-28_18-09-54.jpg" alt="Evrrixx avatar">
+        </div>
+
+        <div class="profile-info">
+          <div class="nick" id="nickSmall">Evrrixx</div>
+          <div class="meta">OSU player</div>
+          <div class="geo">
+            <a class="geo-link" href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener noreferrer" title="Open Lviv in Google Maps">
+              <span class="dot" aria-hidden="true">📍</span> Lviv
+            </a>
           </div>
-          <div class="time" id="status">00:00 / 00:00</div>
+          <div class="osu-stats">🌍 <strong>World</strong> #1.1kk &nbsp; • &nbsp; 🇺🇦 <strong>Country</strong> #22k</div>
         </div>
-        <div class="progress" id="progressWrap"><div class="bar" id="progressBar"></div></div>
-        <div class="bottom-controls">
-          <button class="playbtn" id="play">▶️</button>
-          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.7">
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
 
-<audio id="audio" src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/"></audio>
+        <div class="neon-buttons" id="socials">
+          <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" rel="noopener" title="Discord"><i aria-hidden>🗨️</i><span class="sr-only">Discord</span></a>
+          <a class="btn" href="https://t.me/Evrrixx" target="_blank" rel="noopener" title="Telegram"><i aria-hidden>✈️</i><span class="sr-only">Telegram</span></a>
+          <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" rel="noopener" title="TikTok"><i aria-hidden>🎵</i><span class="sr-only">TikTok</span></a>
+          <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" rel="noopener" title="Osu"><i aria-hidden>⭕</i><span class="sr-only">Osu</span></a>
+        </div>
+      </aside>
+
+      <!-- RIGHT: main info + player -->
+      <section class="right" id="rightCol">
+        <div class="title-row">
+          <div class="title-left">
+            <div class="nick-large" id="nickLarge">Evrrixx</div>
+            <div class="title-sub">OSU player</div>
+          </div>
+
+          <div class="views-inline" aria-hidden="true">👁️ <span id="views-inline">0</span></div>
+        </div>
+
+        <p class="bio"><strong>Гео:</strong> <a class="geo-inline" href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener noreferrer">Lviv</a></p>
+
+        <!-- PLAYER (full width) -->
+        <div class="player" id="playerArea" role="region" aria-label="Music player">
+          <img id="cover" class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
+          <div class="player-body">
+            <div class="track-meta">
+              <div class="track-title">baby cute — универ</div>
+              <div class="track-sub">track</div>
+            </div>
+
+            <div id="progressWrap" class="progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+
+            <div class="controls">
+              <button id="playBtn" class="playbtn" aria-label="Play pause"><span id="playIcon">▶</span><span id="pauseIcon" style="display:none">⏸</span></button>
+              <div class="time" id="time">00:00 / 00:00</div>
+              <div class="volume-control">
+                <button id="muteBtn" class="mute" aria-label="Mute"><span id="muteIcon">🔊</span></button>
+                <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-row">
+          <div class="credit">last updated • now</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <!-- AUDIO element -->
+  <audio id="audio" preload="metadata" crossorigin="anonymous">
+    <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
+  </audio>
 
 <script>
-const overlay=document.getElementById('overlay');
-const wrap=document.querySelector('.wrap');
-const fades=document.querySelectorAll('.fade');
-const audio=document.getElementById('audio');
-const playBtn=document.getElementById('play');
-const status=document.getElementById('status');
-const progress=document.getElementById('progressBar');
-const progressWrap=document.getElementById('progressWrap');
-const volume=document.getElementById('volume');
-const modeBtn=document.getElementById('modeToggle');
-let duration=0,isPlaying=false,isMobile=false;
+/* ============================
+   DOM refs
+   ============================ */
+const overlay = document.getElementById('overlay');
+const aurora = document.getElementById('aurora');
+const wrap = document.getElementById('wrap');
+const card = document.getElementById('card');
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const progressBar = document.getElementById('progressBar');
+const progressWrap = document.getElementById('progressWrap');
+const timeEl = document.getElementById('time');
+const volumeSlider = document.getElementById('volume');
+const muteBtn = document.getElementById('muteBtn');
+const muteIcon = document.getElementById('muteIcon');
+const cover = document.getElementById('cover');
+const viewsEl = document.getElementById('views');
+const viewsInline = document.getElementById('views-inline');
+const viewCountWrap = document.getElementById('view-count');
+const btnPc = document.getElementById('btn-pc');
+const btnPhone = document.getElementById('btn-phone'); // may be null
+const deviceBtns = document.querySelectorAll('.device-btn');
 
-// overlay click
-overlay.addEventListener('click',()=>{
-  overlay.classList.add('hidden');
-  if('vibrate'in navigator)navigator.vibrate(100);
-  setTimeout(()=>{wrap.classList.add('visible');fades.forEach((el,i)=>{setTimeout(()=>el.classList.add('show'),500*i);});},600);
-  audio.volume=0;audio.play().catch(()=>{}); // start silent
-  let fadeInt=setInterval(()=>{if(audio.volume<0.7)audio.volume+=0.02;else clearInterval(fadeInt);},150);
+let isPlaying = false;
+let duration = 0;
+
+/* ============================
+   Views counter (CountAPI with fallback)
+   ============================ */
+(function hitViews(){
+  fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
+    .then(r => r.json())
+    .then(d => {
+      const v = d && d.value ? d.value : 1;
+      viewsEl.textContent = Number(v).toLocaleString();
+      viewsInline.textContent = Number(v).toLocaleString();
+      viewCountWrap.classList.add('visible');
+    })
+    .catch(err=>{
+      console.warn('CountAPI error', err);
+      try{
+        let v = parseInt(localStorage.getItem('views_evrrixx')||'0',10);
+        v = v+1;
+        localStorage.setItem('views_evrrixx', String(v));
+        viewsEl.textContent = v.toLocaleString();
+        viewsInline.textContent = v.toLocaleString();
+      }catch(e){
+        viewsEl.textContent = '1';
+        viewsInline.textContent = '1';
+      }
+    });
+})();
+
+/* ============================
+   Reveal sequence (staged fade-in) + aurora show
+   ============================ */
+function revealSequence(){
+  aurora.classList.add('visible');
+  wrap.classList.remove('hidden');
+  // add 'reveal' to card to start CSS stagger animations
+  card.classList.add('reveal');
+}
+
+/* ============================
+   Play attempt inside user gesture
+   (start from beginning as requested)
+   ============================ */
+function tryPlayFromStart(){
+  try{ audio.currentTime = 0; }catch(e){}
+  audio.volume = 0; // start muted and fade in for better UX
+  const p = audio.play();
+  if(p && p.then){
+    p.then(()=>{
+      isPlaying = true;
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      cover.classList.add('playing');
+      // fade-in volume
+      let v = 0;
+      const volStep = 0.02;
+      const fade = setInterval(()=>{
+        v = Math.min(0.8, v + volStep);
+        audio.volume = v;
+        volumeSlider.value = v.toFixed(2);
+        if(v >= 0.8) clearInterval(fade);
+      }, 120);
+    }).catch(err=>{
+      console.warn('Play blocked:', err);
+    });
+  } else {
+    // fallback
+    isPlaying = !audio.paused;
+  }
+}
+
+/* overlay: pointerdown is considered user gesture */
+overlay.addEventListener('pointerdown', (e)=>{
+  // vibrate on mobile (only once)
+  if(navigator.vibrate) try{ navigator.vibrate(80); }catch(e){}
+  // immediately hide overlay (fade)
+  overlay.classList.add('fade-out');
+  setTimeout(()=> overlay.remove(), 320);
+
+  // reveal visuals
+  revealSequence();
+
+  // synchronous attempt to start audio from start
+  tryPlayFromStart();
 });
 
-// view counter
-let v=parseInt(localStorage.getItem('views_count')||'0',10);v++;localStorage.setItem('views_count',v);
-document.getElementById('views').textContent=v.toLocaleString();
+/* keyboard accessibility for overlay */
+overlay.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' || e.key === ' ') overlay.dispatchEvent(new PointerEvent('pointerdown'));
+});
 
-// audio
-audio.addEventListener('loadedmetadata',()=>{duration=audio.duration;update();});
-audio.addEventListener('timeupdate',update);
-audio.addEventListener('ended',()=>{isPlaying=false;playBtn.textContent='▶️';});
-function fmt(t){if(!t)return'00:00';let m=Math.floor(t/60).toString().padStart(2,'0');let s=Math.floor(t%60).toString().padStart(2,'0');return`${m}:${s}`;}
-function update(){let t=audio.currentTime;let p=duration?(t/duration*100):0;progress.style.width=p+'%';status.textContent=`${fmt(t)} / ${fmt(duration)}`;}
-playBtn.addEventListener('click',()=>{if(isPlaying){audio.pause();playBtn.textContent='▶️';}else{audio.play();playBtn.textContent='⏸️';}isPlaying=!isPlaying;});
-progressWrap.addEventListener('click',e=>{if(!duration)return;let rect=progressWrap.getBoundingClientRect();let x=e.clientX-rect.left;audio.currentTime=(x/rect.width)*duration;});
-volume.addEventListener('input',()=>audio.volume=volume.value);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&isPlaying){audio.pause();isPlaying=false;playBtn.textContent='▶️';}});
-modeBtn.addEventListener('click',()=>{isMobile=!isMobile;document.body.classList.toggle('mobile',isMobile);modeBtn.textContent=isMobile?'📱':'💻';});
+/* ============================
+   Play/Pause button
+   ============================ */
+playBtn.addEventListener('click', ()=>{
+  if(audio.paused){
+    audio.play().then(()=> {
+      isPlaying = true;
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      cover.classList.add('playing');
+    }).catch(err=> console.warn('play error', err));
+  } else {
+    audio.pause();
+    isPlaying = false;
+    playIcon.style.display = '';
+    pauseIcon.style.display = 'none';
+    cover.classList.remove('playing');
+  }
+});
+
+/* ============================
+   Volume & mute
+   ============================ */
+muteBtn.addEventListener('click', ()=>{
+  audio.muted = !audio.muted;
+  muteIcon.textContent = audio.muted ? '🔇' : '🔊';
+});
+volumeSlider.addEventListener('input', (e)=>{
+  audio.volume = parseFloat(e.target.value);
+  if(audio.volume > 0 && audio.muted){ audio.muted = false; muteIcon.textContent = '🔊'; }
+});
+
+/* ============================
+   Progress bar + time updates
+   ============================ */
+audio.addEventListener('loadedmetadata', ()=>{
+  duration = audio.duration || 0;
+  timeEl.textContent = `00:00 / ${formatTime(duration)}`;
+});
+audio.addEventListener('timeupdate', ()=>{
+  const cur = audio.currentTime || 0;
+  const pct = duration ? (cur/duration*100) : 0;
+  progressBar.style.width = pct + '%';
+  timeEl.textContent = `${formatTime(cur)} / ${formatTime(duration)}`;
+  progressWrap.setAttribute('aria-valuenow', Math.floor(cur));
+});
+progressWrap.addEventListener('click', (e)=>{
+  if(!duration) return;
+  const rect = progressWrap.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const p = Math.max(0, Math.min(1, x / rect.width));
+  audio.currentTime = p * duration;
+});
+function formatTime(t){
+  if(!isFinite(t) || t <= 0) return '00:00';
+  const m = Math.floor(t / 60), s = Math.floor(t % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+/* ============================
+   Pause on tab hidden
+   ============================ */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden && !audio.paused){
+    audio.pause();
+    isPlaying = false;
+    playIcon.style.display = '';
+    pauseIcon.style.display = 'none';
+    cover.classList.remove('playing');
+  }
+});
+
+/* ============================
+   Device toggle (PC / Phone) with persistence
+   ============================ */
+const DEVICE_KEY = 'evr_device_mode_v1';
+function applyDevice(device){
+  if(device === 'phone') document.body.classList.add('device-phone');
+  else document.body.classList.remove('device-phone');
+  deviceBtns.forEach(btn=>{
+    btn.classList.toggle('active', (device === 'phone' ? btn.textContent.trim()==='📱' : btn.textContent.trim()==='💻'));
+  });
+  localStorage.setItem(DEVICE_KEY, device);
+}
+document.getElementById('btn-pc').addEventListener('click', ()=> applyDevice('pc'));
+document.getElementById('btn-phone')?.addEventListener('click', ()=> applyDevice('phone'));
+const saved = localStorage.getItem(DEVICE_KEY) || (window.innerWidth <= 480 ? 'phone' : 'pc');
+applyDevice(saved);
+
+/* ============================
+   Snow canvas (lightweight)
+   ============================ */
+(function snow(){
+  const canvas = document.getElementById('snow');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = innerWidth;
+  let H = canvas.height = innerHeight;
+  window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
+
+  const flakes = Array.from({length: 140}, ()=>({ x: Math.random()*W, y: Math.random()*H, r: 0.8 + Math.random()*3.2, s: 0.4 + Math.random()*1.7 }));
+  let t = 0;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.beginPath();
+    for(const f of flakes){
+      ctx.moveTo(f.x,f.y);
+      ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+    }
+    ctx.fill();
+    t += 0.01;
+    for(const f of flakes){
+      f.y += f.s + Math.sin(t + f.x*0.01)*0.3;
+      f.x += Math.cos(t*0.5 + f.y*0.005)*0.4;
+      if(f.y > H+10){ f.y = -10; f.x = Math.random()*W; }
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ============================
+   Accessibility: allow Enter/Space to trigger overlay
+   ============================ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  overlay.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' ') overlay.dispatchEvent(new PointerEvent('pointerdown'));
+  });
+});
 </script>
-
 </body>
 </html>
