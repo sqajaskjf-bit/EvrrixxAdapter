@@ -8,10 +8,12 @@
   <script src="https://kit.fontawesome.com/a2d9d5a64b.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <!-- Экран приветствия -->
   <div id="intro-screen">
     <h2>Click to continue</h2>
   </div>
 
+  <!-- Основной контент -->
   <div id="content" class="hidden">
     <div class="top-bar">
       <div class="view-switch">
@@ -64,19 +66,18 @@
     const mute = document.getElementById('mute');
     let isPlaying = false;
 
-    // ✅ Исправленный запуск — звук активируется сразу при клике
+    // ✅ Полностью рабочий запуск
     intro.addEventListener('click', async () => {
-      intro.style.opacity = '0';
+      intro.style.display = 'none';
       content.classList.remove('hidden');
       content.classList.add('fade-in');
       try {
         await audio.play();
         isPlaying = true;
         playPause.innerHTML = '<i class="fa fa-pause"></i>';
-      } catch (err) {
-        console.warn('Autoplay prevented, click Play manually');
+      } catch (e) {
+        console.log("Autoplay blocked, user can click play.");
       }
-      setTimeout(() => intro.style.display = 'none', 700);
     });
 
     playPause.addEventListener('click', () => {
@@ -91,26 +92,27 @@
     });
 
     audio.addEventListener('timeupdate', () => {
-      progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-      const cur = Math.floor(audio.currentTime);
-      const dur = Math.floor(audio.duration);
-      const fmt = t => `${Math.floor(t/60)}:${('0'+t%60).slice(-2)}`;
-      timeDisplay.textContent = `${fmt(cur)} / ${fmt(dur)}`;
+      if (audio.duration) {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+        const cur = Math.floor(audio.currentTime);
+        const dur = Math.floor(audio.duration);
+        const fmt = t => `${Math.floor(t/60)}:${('0'+t%60).slice(-2)}`;
+        timeDisplay.textContent = `${fmt(cur)} / ${fmt(dur)}`;
+      }
     });
 
     progress.addEventListener('input', () => {
       audio.currentTime = (progress.value / 100) * audio.duration;
     });
 
-    volume.addEventListener('input', () => {
-      audio.volume = volume.value;
-    });
+    volume.addEventListener('input', () => audio.volume = volume.value);
 
     mute.addEventListener('click', () => {
       audio.muted = !audio.muted;
       mute.innerHTML = audio.muted ? '<i class="fa fa-volume-mute"></i>' : '<i class="fa fa-volume-up"></i>';
     });
 
+    // ⏸ Автопауза при уходе со вкладки
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && !audio.paused) audio.pause();
     });
