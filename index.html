@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evrrixx | Bio</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/a54d2cbf95.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -18,10 +18,10 @@
     <div class="meta">OSU player • Lviv</div>
 
     <div class="neon-buttons">
-      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn"><i class="fab fa-discord"></i></a>
-      <a href="https://t.me/Evrrixx" target="_blank" class="btn"><i class="fab fa-telegram-plane"></i></a>
-      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn"><i class="fab fa-tiktok"></i></a>
-      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn"><i class="fas fa-circle"></i></a>
+      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn" title="Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://t.me/Evrrixx" target="_blank" class="btn" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn" title="Osu!"><i class="fas fa-circle"></i></a>
     </div>
 
     <div class="player" id="player">
@@ -29,6 +29,7 @@
       <div class="song-info">
         <div class="song-title">baby cute — универ</div>
         <div class="progress"><div class="bar" id="progress-bar"></div></div>
+        <div class="time"><span id="current-time">0:00</span> / <span id="total-time">0:00</span></div>
       </div>
       <div class="controls">
         <i id="play-btn" class="fas fa-play playbtn"></i>
@@ -45,6 +46,8 @@
     const playBtn = document.getElementById('play-btn');
     const player = document.getElementById('player');
     const progressBar = document.getElementById('progress-bar');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalTimeEl = document.getElementById('total-time');
 
     overlay.addEventListener('click', () => {
       overlay.style.opacity = '0';
@@ -67,15 +70,21 @@
       }
     });
 
+    audio.addEventListener('loadedmetadata', () => {
+      const totalMinutes = Math.floor(audio.duration / 60);
+      const totalSeconds = Math.floor(audio.duration % 60);
+      totalTimeEl.textContent = `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
+    });
+
     audio.addEventListener('timeupdate', () => {
       const progress = (audio.currentTime / audio.duration) * 100;
       progressBar.style.width = `${progress}%`;
+      const currentMinutes = Math.floor(audio.currentTime / 60);
+      const currentSeconds = Math.floor(audio.currentTime % 60);
+      currentTimeEl.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
     });
 
-    // создаём снег ❄️
-    const snowContainer = document.createElement('div');
-    document.body.appendChild(snowContainer);
-
+    // снег ❄️
     function createSnowflake() {
       const snowflake = document.createElement('div');
       snowflake.classList.add('snowflake');
@@ -85,10 +94,7 @@
       snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
       snowflake.style.opacity = Math.random();
       document.body.appendChild(snowflake);
-
-      setTimeout(() => {
-        snowflake.remove();
-      }, 10000);
+      setTimeout(() => snowflake.remove(), 10000);
     }
     setInterval(createSnowflake, 200);
   </script>
