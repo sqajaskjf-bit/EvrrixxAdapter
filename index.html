@@ -3,17 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Evrrixx — profile</title>
+  <title>Evrrixx — Profile</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <!-- ВЕРХ: устройство + просмотры -->
   <div class="top-right">
-    <div id="device-toggle" class="device-toggle">
-      <button id="btn-pc" class="device-btn" title="PC view"><i class="fa-solid fa-desktop"></i></button>
-      <button id="btn-phone" class="device-btn" title="Mobile view"><i class="fa-solid fa-mobile-screen-button"></i></button>
-    </div>
     <div id="view-count" class="view-count">👁️ <span id="views">0</span> views</div>
   </div>
 
@@ -22,23 +17,16 @@
     <div id="overlayBtn" class="overlay-cta">Click to continue</div>
   </div>
 
-  <!-- Карточка -->
   <main class="card">
     <aside class="left">
-      <div class="avatar-wrap">
-        <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar">
+      <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar">
+      <div class="nick">Evrrixx</div>
+      <div class="meta">
+        <a href="https://www.google.com/maps/place/Lviv" target="_blank" class="location">
+          <i class="fa-solid fa-location-dot"></i> Lviv
+        </a>
       </div>
-      <div class="profile-meta">
-        <div class="nick">Evrrixx</div>
-        <div class="meta">
-          <a href="https://www.google.com/maps/place/Lviv" target="_blank" class="location">
-            <i class="fa-solid fa-location-dot"></i> Lviv
-          </a>
-        </div>
-        <div class="osu-stats">
-          🌍 World #1.1kk | 🇺🇦 Country #22k
-        </div>
-      </div>
+      <div class="osu-stats">🌍 World #1.1kk | 🇺🇦 Country #22k</div>
       <div class="neon-buttons">
         <a class="btn" href="https://discord.com/users/1379041675070148670"><i class="fa-brands fa-discord"></i></a>
         <a class="btn" href="https://t.me/Evrrixx"><i class="fa-brands fa-telegram"></i></a>
@@ -47,17 +35,13 @@
       </div>
     </aside>
 
-    <!-- ПРАВО -->
     <section class="right">
-      <div class="top-row">
-        <div class="nick-large">Evrrixx</div>
-        <div class="views-inline">👁️ <span id="views-inline">0</span></div>
-      </div>
+      <div class="nick-large">Evrrixx</div>
       <p class="bio"><strong>OSU player</strong></p>
 
       <!-- ПЛЕЕР -->
       <div class="player">
-        <img class="track-cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
+        <img id="cover" class="track-cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
         <div class="player-body">
           <div class="track-title">baby cute — универ</div>
           <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
@@ -79,12 +63,12 @@
     const overlay = document.getElementById('overlay');
     const audio = document.getElementById('audio');
     const playBtn = document.getElementById('playBtn');
+    const cover = document.getElementById('cover');
     const progressBar = document.getElementById('progressBar');
     const currentTimeEl = document.getElementById('currentTime');
     const totalTimeEl = document.getElementById('totalTime');
     const volumeSlider = document.getElementById('volume');
     const viewCountEl = document.getElementById('views');
-    const viewCountInline = document.getElementById('views-inline');
 
     function fmtTime(t) {
       if (!isFinite(t)) return "0:00";
@@ -93,29 +77,29 @@
       return `${m}:${s}`;
     }
 
-    // Запуск после клика
     overlay.addEventListener('click', async () => {
       overlay.classList.add('hidden');
       try {
         await audio.play();
         playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        cover.classList.add('playing');
       } catch (err) {
         console.log('Audio blocked', err);
       }
     });
 
-    // Play / Pause
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
         playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        cover.classList.add('playing');
       } else {
         audio.pause();
         playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        cover.classList.remove('playing');
       }
     });
 
-    // Обновление времени
     audio.addEventListener('loadedmetadata', () => {
       totalTimeEl.textContent = fmtTime(audio.duration);
     });
@@ -123,20 +107,13 @@
       currentTimeEl.textContent = fmtTime(audio.currentTime);
       progressBar.style.width = (audio.currentTime / audio.duration) * 100 + "%";
     });
-
-    // Громкость
     volumeSlider.addEventListener('input', e => audio.volume = e.target.value);
 
     // Реальный счётчик просмотров
     fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
       .then(res => res.json())
-      .then(data => {
-        const v = data.value;
-        viewCountEl.textContent = v.toLocaleString();
-        viewCountInline.textContent = v.toLocaleString();
-      });
+      .then(data => viewCountEl.textContent = data.value.toLocaleString());
 
-    // Автопауза при уходе
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) audio.pause();
     });
