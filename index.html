@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evrrixx | Bio</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -18,22 +18,20 @@
     <div class="meta">OSU player • Lviv</div>
 
     <div class="neon-buttons">
-      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn" title="Discord"><i class="fab fa-discord"></i></a>
-      <a href="https://t.me/Evrrixx" target="_blank" class="btn" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
-      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn" title="Osu!"><i class="fas fa-circle"></i></a>
+      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn discord" title="Discord"><i class="fa-brands fa-discord"></i></a>
+      <a href="https://t.me/Evrrixx" target="_blank" class="btn telegram" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn osu" title="Osu!"><i class="fa-solid fa-circle"></i></a>
     </div>
 
     <div class="player" id="player">
-      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover" id="song-cover">
+      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover">
       <div class="song-info">
         <div class="song-title">baby cute — универ</div>
         <div class="progress"><div class="bar" id="progress-bar"></div></div>
         <div class="time"><span id="current-time">0:00</span> / <span id="total-time">0:00</span></div>
       </div>
-      <div class="controls">
-        <i id="play-btn" class="fas fa-play playbtn"></i>
-      </div>
+      <button class="playbtn" id="play-btn"><i class="fa-solid fa-play"></i></button>
     </div>
 
     <audio id="audio" src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" preload="auto"></audio>
@@ -44,55 +42,44 @@
     const main = document.getElementById('main');
     const audio = document.getElementById('audio');
     const playBtn = document.getElementById('play-btn');
-    const player = document.getElementById('player');
     const progressBar = document.getElementById('progress-bar');
     const currentTimeEl = document.getElementById('current-time');
     const totalTimeEl = document.getElementById('total-time');
-    const cover = document.getElementById('song-cover');
 
-    // показать сайт и начать песню
     overlay.addEventListener('click', () => {
       overlay.style.opacity = '0';
       setTimeout(() => overlay.style.display = 'none', 800);
       main.classList.add('visible');
       audio.play();
-      player.classList.add('playing');
-      playBtn.classList.replace('fa-play', 'fa-pause');
-      cover.classList.add('rotate');
+      playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
     });
 
-    // play/pause
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playBtn.classList.replace('fa-play', 'fa-pause');
-        player.classList.add('playing');
-        cover.classList.add('rotate');
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
       } else {
         audio.pause();
-        playBtn.classList.replace('fa-pause', 'fa-play');
-        player.classList.remove('playing');
-        cover.classList.remove('rotate');
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
       }
     });
 
-    // загрузка данных о длительности
     audio.addEventListener('loadedmetadata', () => {
-      const totalMinutes = Math.floor(audio.duration / 60);
-      const totalSeconds = Math.floor(audio.duration % 60);
-      totalTimeEl.textContent = `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
+      const total = Math.floor(audio.duration);
+      const min = Math.floor(total / 60);
+      const sec = (total % 60).toString().padStart(2, '0');
+      totalTimeEl.textContent = `${min}:${sec}`;
     });
 
-    // обновление времени и прогрессбара
     audio.addEventListener('timeupdate', () => {
-      const progress = (audio.currentTime / audio.duration) * 100;
-      progressBar.style.width = `${progress}%`;
-      const currentMinutes = Math.floor(audio.currentTime / 60);
-      const currentSeconds = Math.floor(audio.currentTime % 60);
-      currentTimeEl.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
+      const current = Math.floor(audio.currentTime);
+      const min = Math.floor(current / 60);
+      const sec = (current % 60).toString().padStart(2, '0');
+      currentTimeEl.textContent = `${min}:${sec}`;
+      progressBar.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
     });
 
-    // снег ❄️
+    // снег
     function createSnowflake() {
       const snowflake = document.createElement('div');
       snowflake.classList.add('snowflake');
@@ -106,16 +93,5 @@
     }
     setInterval(createSnowflake, 200);
   </script>
-
-  <style>
-    /* добавляем вращение обложки */
-    .rotate {
-      animation: spin 8s linear infinite;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  </style>
 </body>
 </html>
