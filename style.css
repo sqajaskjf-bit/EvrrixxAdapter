@@ -1,156 +1,216 @@
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(180deg, #07040a, #0e0b12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-family: "Inter", sans-serif;
-  overflow: hidden;
+/* ===========================================================
+   style.css — night neon profile (v3 final)
+   Includes: northern lights, snow, fade-in, player, counter
+   =========================================================== */
+
+/* Google-like Poppins used earlier — system fallback OK */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root{
+  --bg-dark-1: #05040b;
+  --bg-dark-2: #0b0620;
+  --neon-c: #7afcff;
+  --neon-c2:#c77bff;
+  --muted: rgba(255,255,255,0.6);
 }
 
-#overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 700;
-  color: #7afcff;
-  cursor: pointer;
-  transition: opacity 0.8s;
-  z-index: 1000;
+/* basic reset */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:#fff;
+  background:
+    radial-gradient(800px 400px at 10% 10%, rgba(124,58,237,0.06), transparent 6%),
+    radial-gradient(600px 350px at 90% 90%, rgba(58,199,230,0.04), transparent 6%),
+    linear-gradient(180deg, var(--bg-dark-1), var(--bg-dark-2));
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
 
-.wrap {
-  opacity: 0;
-  transition: opacity 1.5s ease;
-  text-align: center;
+/* -----------------------------------------------------------
+   View counter (top-right) — appears after load
+   ----------------------------------------------------------- */
+#view-count{
+  position:fixed;
+  top:16px;
+  right:16px;
+  color:var(--neon-c);
+  background: linear-gradient(90deg, rgba(122,252,255,0.04), rgba(199,123,255,0.02));
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 26px rgba(122,252,255,0.03);
+  font-weight:700;
+  transform: translateY(-14px);
+  opacity:0;
+  transition:opacity .6s ease, transform .6s ease;
+  z-index:60;
+}
+#view-count.visible{opacity:1; transform:none}
+
+/* -----------------------------------------------------------
+   Overlay — click to continue
+   ----------------------------------------------------------- */
+#overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background: rgba(2,2,6,0.95);
+  z-index:70;
+  cursor:pointer;
+  color:var(--neon-c);
+  text-shadow: 0 0 12px rgba(122,252,255,0.06);
+}
+.overlay-cta{
+  font-weight:800;
+  font-size:20px;
+  padding:12px 20px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+.overlay-hint{color:var(--muted); font-size:13px}
+
+/* -----------------------------------------------------------
+   Main card layout
+   ----------------------------------------------------------- */
+.card{
+  width:940px;
+  max-width:95%;
+  display:flex;
+  gap:24px;
+  padding:36px;
+  border-radius:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  transform: translateY(20px);
+  opacity:0;
+  transition:opacity .8s ease, transform .8s ease;
+  z-index:50;
 }
 
-.wrap.visible {
-  opacity: 1;
+/* reveal */
+.card.visible{opacity:1; transform:none}
+
+/* left column */
+.left{width:260px; display:flex; flex-direction:column; align-items:center; gap:12px}
+.avatar-wrap{padding:10px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008)); border:1px solid rgba(255,255,255,0.02)}
+.avatar{width:140px; height:140px; border-radius:999px; object-fit:cover; border:4px solid rgba(255,255,255,0.04); box-shadow: 0 12px 40px rgba(122,252,255,0.04)}
+
+/* profile text */
+.profile-meta{display:flex; flex-direction:column; align-items:center; gap:4px}
+.nick{font-weight:800; font-size:26px}
+.meta{color:var(--muted); font-weight:600}
+
+/* neon buttons container — will fade in */
+.neon-buttons{display:flex; gap:10px; margin-top:6px; opacity:0; transform:translateY(18px); transition: opacity .6s ease, transform .6s ease}
+.neon-buttons.visible{opacity:1; transform:none}
+
+/* button */
+.btn{width:44px; height:44px; display:grid; place-items:center; border-radius:10px; text-decoration:none; color:#fff; background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 10px 28px rgba(0,0,0,0.45); transition: transform .18s, box-shadow .18s}
+.btn:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(122,252,255,0.06)}
+
+/* right column */
+.right{flex:1; display:flex; flex-direction:column; gap:12px}
+
+/* top row */
+.top-row{display:flex; justify-content:space-between; align-items:center}
+.big-nick{display:flex; flex-direction:column}
+.nick-large{font-weight:800; font-size:30px; opacity:0; transform: translateY(12px); transition:opacity .6s ease, transform .6s ease}
+.nick-large.visible{opacity:1; transform:none}
+.small-meta{color:var(--muted); font-weight:600}
+
+/* views inline small */
+.views-inline{color:var(--muted); font-weight:700}
+
+/* bio */
+.bio{color:#e9e9e9; font-weight:500}
+
+/* ---------------- Player ---------------- */
+.player{display:flex; gap:14px; align-items:center; background: linear-gradient(180deg, rgba(255,255,255,0.008), rgba(255,255,255,0.01)); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); opacity:0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease}
+.player.visible{opacity:1; transform:none}
+.track-cover{display:none} /* unused */
+
+.track-cover, .track-cover img{border-radius:8px}
+
+/* track cover (static — no rotation) */
+.track-cover{width:88px; height:88px; border-radius:10px; object-fit:cover}
+.track-cover.glow{ box-shadow: 0 0 30px rgba(122,252,255,0.18); }
+
+/* For this layout use .track-cover = id trackCover (60x60 in previous) */
+.track-cover{display:none}
+
+/* We use modern compact player: track-cover small, info main */
+.track-cover-inline{width:64px; height:64px; border-radius:10px; object-fit:cover}
+
+/* We'll reuse #trackCover which is 60x60 in markup */
+.track-cover-inline{width:64px; height:64px; border-radius:10px; object-fit:cover; box-shadow: 0 8px 28px rgba(122,252,255,0.06)}
+
+/* player-body */
+.player-body{display:flex; flex-direction:column; gap:8px; flex:1}
+.track-title{font-weight:700; font-size:15px}
+.track-sub{color:var(--muted); font-size:13px}
+
+/* progress bar */
+.progress-wrap{height:8px; background:rgba(255,255,255,0.04); border-radius:8px; overflow:hidden; cursor:pointer}
+.progress-bar{height:100%; width:0%; background: linear-gradient(90deg, var(--neon-c), var(--neon-c2)); transition: width .12s linear}
+
+/* controls row */
+.player-controls{display:flex; align-items:center; gap:12px; justify-content:space-between; margin-top:6px}
+.control{background:none; border:none; color:white; cursor:pointer; font-size:18px}
+.time{color:var(--muted); font-weight:700; font-size:13px}
+
+/* volume */
+.vol-wrap{display:flex; align-items:center; gap:8px}
+.volume-slider{width:120px; accent-color: var(--neon-c); outline:none}
+
+/* small footer */
+.card-footer{display:flex; justify-content:space-between; color:var(--muted); margin-top:8px}
+
+/* snowflakes (appear on body) */
+.snowflake{position:fixed; top:-10px; color:#fff; font-size:12px; opacity:0.85; animation: fall linear forwards; pointer-events:none; z-index:20}
+@keyframes fall{to{transform: translateY(110vh)}}
+
+/* northern lights / subtle gradient animation — overlay pseudo */
+body::before{
+  content:"";
+  position:fixed;
+  left:-20%;
+  top:-30%;
+  width:140%;
+  height:120%;
+  background: radial-gradient(600px 200px at 10% 10%, rgba(124,58,237,0.06), transparent 12%),
+              radial-gradient(600px 200px at 80% 70%, rgba(58,199,230,0.04), transparent 12%);
+  filter: blur(30px) saturate(120%);
+  opacity:0.45;
+  transform: translateY(0);
+  transition:opacity .8s ease;
+  z-index:10;
+  animation: aurora 12s linear infinite;
+}
+@keyframes aurora {
+  0%{ transform: translateX(-10%) translateY(0) scale(1); opacity:.36 }
+  50%{ transform: translateX(10%) translateY(-6%) scale(1.04); opacity:.52 }
+  100%{ transform: translateX(-10%) translateY(0) scale(1); opacity:.36 }
 }
 
-.avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  object-fit: cover;
-  margin-bottom: 16px;
-}
-
-.nick {
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.meta {
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 20px;
-}
-
-.neon-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 25px;
-}
-
-.btn {
-  color: white;
-  font-size: 22px;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  transition: 0.2s;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 15px rgba(122, 252, 255, 0.4);
-}
-
-.player {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 14px 18px;
-  gap: 14px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.song-cover {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.song-info {
-  flex: 1;
-  text-align: left;
-}
-
-.song-title {
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.progress {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 5px;
-}
-
-.bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #7afcff, #c77bff);
-  transition: width 0.1s linear;
-}
-
-.time {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.playbtn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 28px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.playbtn:hover {
-  transform: scale(1.15);
-}
-
-/* снег */
-.snowflake {
-  position: fixed;
-  top: -10px;
-  color: white;
-  animation: fall linear forwards;
-  z-index: 0;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh);
-  }
+/* small responsive */
+@media (max-width:880px){
+  .card{flex-direction:column; padding:20px}
+  .left{flex-direction:row; width:100%; justify-content:space-between; align-items:center}
+  .neon-buttons{order:3}
+  .right{width:100%}
+  .player{flex-direction:column; align-items:stretch}
+  .vol-wrap{justify-content:flex-end}
 }
