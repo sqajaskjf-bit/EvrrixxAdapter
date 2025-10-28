@@ -1,146 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #0a0a0a, #050505);
-  overflow: hidden;
-  color: white;
+  margin: 0;
   height: 100vh;
+  background: linear-gradient(180deg, #07040a, #0e0b12);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 
 #overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
-  letter-spacing: 1px;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #7afcff;
   cursor: pointer;
   transition: opacity 0.8s;
-  z-index: 999;
+  z-index: 1000;
 }
 
-/* --- основная карточка профиля --- */
 .wrap {
-  background: rgba(20, 20, 30, 0.7);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 30px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
   opacity: 0;
-  transform: scale(0.9);
-  transition: all 1s ease;
-  animation: breathingGlow 5s ease-in-out infinite alternate;
-}
-
-@keyframes breathingGlow {
-  0% {
-    box-shadow: 0 0 20px rgba(0,255,255,0.25), inset 0 0 10px rgba(0,255,255,0.1);
-  }
-  100% {
-    box-shadow: 0 0 45px rgba(0,255,255,0.5), inset 0 0 25px rgba(0,255,255,0.2);
-  }
+  transition: opacity 1.5s ease;
+  text-align: center;
 }
 
 .wrap.visible {
   opacity: 1;
-  transform: scale(1);
 }
 
-/* --- аватар --- */
 .avatar {
-  width: 110px;
-  height: 110px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  margin-bottom: 15px;
-  border: 3px solid rgba(0, 255, 255, 0.4);
-  box-shadow: 0 0 25px rgba(0,255,255,0.5);
-  transition: 0.4s ease;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+  margin-bottom: 16px;
 }
 
-.avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 35px rgba(0,255,255,0.8);
-}
-
-/* --- текст --- */
 .nick {
-  font-size: 1.6rem;
-  font-weight: 600;
-  text-shadow: 0 0 10px rgba(0,255,255,0.4);
+  font-size: 28px;
+  font-weight: 800;
 }
 
 .meta {
-  font-size: 0.9rem;
-  color: #ccc;
-  margin-bottom: 15px;
-}
-
-/* --- кнопки соцсетей --- */
-.neon-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 20px;
 }
 
-.btn {
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-  padding: 10px;
+.neon-buttons {
   display: flex;
+  gap: 10px;
   justify-content: center;
+  margin-bottom: 25px;
+}
+
+.btn {
+  color: white;
+  font-size: 22px;
+  width: 42px;
+  height: 42px;
+  display: flex;
   align-items: center;
-  transition: 0.3s;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: 0.2s;
 }
 
 .btn:hover {
-  background: rgba(0,255,255,0.25);
-  box-shadow: 0 0 15px rgba(0,255,255,0.5);
-  transform: scale(1.15);
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(122, 252, 255, 0.4);
 }
 
-/* --- плеер --- */
 .player {
   display: flex;
   align-items: center;
-  gap: 15px;
-  background: rgba(255,255,255,0.05);
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: inset 0 0 15px rgba(0,255,255,0.2);
-  transition: 0.4s ease;
-}
-
-.player.playing {
-  box-shadow: 0 0 20px rgba(0,255,255,0.4), inset 0 0 10px rgba(0,255,255,0.2);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 14px 18px;
+  gap: 14px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .song-cover {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 0 10px rgba(0,255,255,0.4);
-  transition: 0.4s ease;
-}
-
-.song-cover:hover {
-  box-shadow: 0 0 25px rgba(0,255,255,0.8);
-  transform: scale(1.05);
 }
 
 .song-info {
@@ -149,63 +103,54 @@ body {
 }
 
 .song-title {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
   margin-bottom: 6px;
-  transition: color 0.3s, text-shadow 0.3s;
-}
-
-.song-title:hover {
-  color: cyan;
-  text-shadow: 0 0 10px cyan;
-}
-
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.playbtn {
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: transform 0.2s, text-shadow 0.3s;
-}
-
-.playbtn:hover {
-  transform: scale(1.2);
-  text-shadow: 0 0 8px cyan;
 }
 
 .progress {
-  flex: 1;
   height: 6px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 5px;
 }
 
 .bar {
   height: 100%;
-  width: 0;
-  background: cyan;
-  box-shadow: 0 0 10px cyan;
-  transition: width 0.2s;
+  width: 0%;
+  background: linear-gradient(90deg, #7afcff, #c77bff);
+  transition: width 0.1s linear;
 }
 
-/* --- снег --- */
+.time {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.playbtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.playbtn:hover {
+  transform: scale(1.15);
+}
+
+/* снег */
 .snowflake {
   position: fixed;
   top: -10px;
   color: white;
-  opacity: 0.8;
-  animation: fall linear infinite;
-  pointer-events: none;
+  animation: fall linear forwards;
   z-index: 0;
 }
 
 @keyframes fall {
   to {
-    transform: translateY(110vh);
+    transform: translateY(100vh);
   }
 }
