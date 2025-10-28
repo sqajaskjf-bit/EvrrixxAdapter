@@ -1,97 +1,215 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evrrixx | Bio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-  <div id="overlay">Click to continue</div>
-
-  <div class="wrap" id="main">
-    <img src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar" class="avatar">
-    
-    <div class="nick">Evrrixx</div>
-    <div class="meta">OSU player • Lviv</div>
-
-    <div class="neon-buttons">
-      <a href="https://discordapp.com/users/1379041675070148670" target="_blank" class="btn discord" title="Discord"><i class="fa-brands fa-discord"></i></a>
-      <a href="https://t.me/Evrrixx" target="_blank" class="btn telegram" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
-      <a href="https://www.tiktok.com/@svalipchik" target="_blank" class="btn tiktok" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://osu.ppy.sh/users/38462434" target="_blank" class="btn osu" title="Osu!"><i class="fa-solid fa-circle"></i></a>
-    </div>
-
-    <div class="player" id="player">
-      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover">
-      <div class="song-info">
-        <div class="song-title">baby cute — универ</div>
-        <div class="progress"><div class="bar" id="progress-bar"></div></div>
-        <div class="time"><span id="current-time">0:00</span> / <span id="total-time">0:00</span></div>
-      </div>
-      <button class="playbtn" id="play-btn"><i class="fa-solid fa-play"></i></button>
-    </div>
-
-    <audio id="audio" src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" preload="auto"></audio>
-  </div>
-
-  <script>
-    const overlay = document.getElementById('overlay');
-    const main = document.getElementById('main');
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('play-btn');
-    const progressBar = document.getElementById('progress-bar');
-    const currentTimeEl = document.getElementById('current-time');
-    const totalTimeEl = document.getElementById('total-time');
-
-    overlay.addEventListener('click', () => {
-      overlay.style.opacity = '0';
-      setTimeout(() => overlay.style.display = 'none', 800);
-      main.classList.add('visible');
-      audio.play();
-      playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-    });
-
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } else {
-        audio.pause();
-        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-      }
-    });
-
-    audio.addEventListener('loadedmetadata', () => {
-      const total = Math.floor(audio.duration);
-      const min = Math.floor(total / 60);
-      const sec = (total % 60).toString().padStart(2, '0');
-      totalTimeEl.textContent = `${min}:${sec}`;
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      const current = Math.floor(audio.currentTime);
-      const min = Math.floor(current / 60);
-      const sec = (current % 60).toString().padStart(2, '0');
-      currentTimeEl.textContent = `${min}:${sec}`;
-      progressBar.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-    });
-
-    // снег
-    function createSnowflake() {
-      const snowflake = document.createElement('div');
-      snowflake.classList.add('snowflake');
-      snowflake.textContent = '❄';
-      snowflake.style.left = Math.random() * 100 + 'vw';
-      snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
-      snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
-      snowflake.style.opacity = Math.random();
-      document.body.appendChild(snowflake);
-      setTimeout(() => snowflake.remove(), 10000);
-    }
-    setInterval(createSnowflake, 200);
-  </script>
-</body>
-</html>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #0a0a0a, #050505);
+  overflow: hidden;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+#view-count {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  font-size: 14px;
+  color: #7afcff;
+  opacity: 0;
+  transition: opacity .8s, transform .8s;
+  transform: translateY(-20px);
+}
+#view-count.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity .8s;
+  z-index: 999;
+}
+.wrap {
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 30px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1s ease;
+  animation: breathingGlow 5s ease-in-out infinite alternate;
+}
+@keyframes breathingGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(0,255,255,0.25), inset 0 0 10px rgba(0,255,255,0.1);
+  }
+  100% {
+    box-shadow: 0 0 45px rgba(0,255,255,0.5), inset 0 0 25px rgba(0,255,255,0.2);
+  }
+}
+.wrap.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 25px rgba(0,255,255,0.5);
+  transition: 0.4s ease;
+}
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(0,255,255,0.8);
+}
+.nick {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0,255,255,0.4);
+}
+.meta {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+.neon-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  opacity: 0;
+  transition: opacity .8s, transform .8s;
+  transform: translateY(20px);
+}
+.neon-buttons.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.btn {
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+  color: #fff;
+}
+.btn:hover {
+  background: rgba(0,255,255,0.25);
+  box-shadow: 0 0 15px rgba(0,255,255,0.5);
+  transform: scale(1.15);
+}
+.player {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 15px rgba(0,255,255,0.2);
+  transition: 0.4s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.player.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.song-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(0,255,255,0.4);
+  transition: 0.4s ease;
+}
+.song-cover.playing {
+  animation: spin 8s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.song-info {
+  flex: 1;
+  text-align: left;
+}
+.song-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.song-title:hover {
+  color: cyan;
+  text-shadow: 0 0 10px cyan;
+}
+.progress {
+  flex:1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #7afcff, #c77bff);
+  transition: width .2s;
+}
+.time {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  display: flex;
+  justify-content: space-between;
+}
+.playbtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.playbtn:hover {
+  transform: scale(1.2);
+}
+.volume-slider {
+  width: 80px;
+  accent-color: #7afcff;
+}
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  opacity: 0.8;
+  animation: fall linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
