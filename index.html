@@ -1,168 +1,337 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evrrixx — Profile</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evrrixx — profile</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 </head>
 <body>
-  <!-- Экран приветствия -->
-  <div id="start-screen">
-    <div class="start-overlay">
-      <h1 class="start-text">Click to continue</h1>
+  <!-- AURORA LAYER (will fade in) -->
+  <div id="aurora" class="aurora"></div>
+
+  <!-- SNOW CANVAS -->
+  <canvas id="snow" aria-hidden="true"></canvas>
+
+  <!-- TOP CONTROLS -->
+  <div class="top-right">
+    <div class="device-toggle" role="tablist" aria-label="Display mode">
+      <button id="btn-pc" class="device-btn" aria-pressed="false" title="PC view"><i class="fa-solid fa-desktop"></i></button>
+      <button id="btn-phone" class="device-btn" aria-pressed="false" title="Phone view"><i class="fa-solid fa-mobile-screen-button"></i></button>
+    </div>
+    <div id="view-count" class="view-count" aria-live="polite">👁️ <span id="views">0</span></div>
+  </div>
+
+  <!-- OVERLAY (must interact to allow audio) -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
+    <div class="overlay-inner">
+      <div id="overlayText" class="overlay-text">Click to continue</div>
+      <div class="overlay-sub">Tap anywhere to reveal profile and start music</div>
     </div>
   </div>
 
-  <!-- Снег -->
-  <canvas id="snow"></canvas>
-
-  <!-- Счётчик просмотров и переключатель -->
-  <div class="top-bar">
-    <div class="views">
-      <svg class="eye" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12z" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.2"/></svg>
-      <span id="viewCount">1</span>
-    </div>
-    <button id="modeToggle" class="mode-toggle" title="Switch mode">💻</button>
-  </div>
-
-  <!-- Основная карточка -->
-  <div class="container hidden">
-    <div class="profile-card">
-      <div class="avatar-section">
-        <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="Evrrixx Avatar">
-        <h1 class="nick">Evrrixx</h1>
-        <p class="rank">🌍 #1.1kk • Country #22k</p>
-        <p class="geo">
-          <a href="https://www.google.com/maps/place/Lviv" target="_blank" class="geo-link">
-            📍 Lviv
-          </a>
-        </p>
-        <div class="links">
-          <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" title="Discord">💬</a>
-          <a class="btn" href="https://t.me/Evrrixx" target="_blank" title="Telegram">📱</a>
-          <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" title="TikTok">🎵</a>
-          <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" title="Osu">⭕</a>
+  <!-- MAIN CONTAINER -->
+  <main class="wrap hidden" id="wrap" role="main" aria-label="Profile card">
+    <article class="card" id="card">
+      <!-- LEFT: avatar + links -->
+      <aside class="left" id="leftCol">
+        <div class="avatar-wrap">
+          <img id="avatar" class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="Evrrixx avatar">
         </div>
-      </div>
 
-      <div class="music-player">
-        <img class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="Cover">
-        <div class="controls">
-          <h3>baby cute — универ</h3>
-          <div class="progress-bar">
-            <div class="bar" id="progress"></div>
-          </div>
-          <div class="control-buttons">
-            <button id="playPause" class="play-btn">▶️</button>
-            <span id="time">00:00 / 00:00</span>
-            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.6" />
+        <div class="info-block">
+          <div class="nick" id="nickSmall">Evrrixx</div>
+          <div class="meta">OSU player</div>
+          <div class="geo">
+            <a href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener" class="geo-link" title="Open Lviv in Google Maps">
+              <i class="fa-solid fa-location-dot"></i> Lviv
+            </a>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    // === Музыка ===
-    const audio = new Audio("https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/");
-    const playPause = document.getElementById("playPause");
-    const progress = document.getElementById("progress");
-    const time = document.getElementById("time");
-    const volume = document.getElementById("volume");
+        <div class="socials" id="socials">
+          <a class="social-btn" href="https://discord.com/users/1379041675070148670" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+          <a class="social-btn" href="https://t.me/Evrrixx" target="_blank" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a class="social-btn" href="https://www.tiktok.com/@svalipchik" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a class="social-btn" href="https://osu.ppy.sh/users/38462434" target="_blank" title="Osu"><i class="fa-solid fa-circle"></i></a>
+        </div>
+      </aside>
 
-    let playing = false;
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s.toString().padStart(2, "0")}`;
+      <!-- RIGHT: main info & player -->
+      <section class="right" id="rightCol">
+        <header class="header-row">
+          <div class="nick-large" id="nickLarge">Evrrixx</div>
+          <div class="osu-stats">🌍 <span class="stat-val">#1.1kk</span> &nbsp;|&nbsp; 🇺🇦 <span class="stat-val">#22k</span></div>
+        </header>
+
+        <p class="bio">OSU player</p>
+
+        <!-- Player area (full width under header on desktop) -->
+        <div class="player" id="player">
+          <img id="cover" class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
+          <div class="player-body">
+            <div class="track-info">
+              <div class="track-title">baby cute — универ</div>
+              <div class="track-sub">track</div>
+            </div>
+
+            <div class="progress-wrap" id="progressWrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="controls-row">
+              <button id="playBtn" class="playbtn" aria-label="Play/pause"><i id="playIcon" class="fa-solid fa-play"></i><i id="pauseIcon" class="fa-solid fa-pause" style="display:none"></i></button>
+              <div class="time" id="time">00:00 / 00:00</div>
+              <div class="volume">
+                <button id="muteBtn" class="mute" aria-label="Mute"><i class="fa-solid fa-volume-high"></i></button>
+                <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </article>
+  </main>
+
+  <!-- AUDIO element (in DOM before user gesture) -->
+  <audio id="audio" preload="metadata" crossorigin="anonymous">
+    <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
+  </audio>
+
+<script>
+/* ============================
+   Helpers & DOM refs
+   ============================ */
+const overlay = document.getElementById('overlay');
+const wrap = document.getElementById('wrap');
+const aurora = document.getElementById('aurora');
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const progressBar = document.getElementById('progressBar');
+const progressWrap = document.getElementById('progressWrap');
+const timeEl = document.getElementById('time');
+const volumeSlider = document.getElementById('volume');
+const muteBtn = document.getElementById('muteBtn');
+const cover = document.getElementById('cover');
+const viewEl = document.getElementById('views');
+const viewCountBox = document.getElementById('view-count');
+const btnPc = document.getElementById('btn-pc');
+const btnPhone = document.getElementById('btn-phone'); // may be null if not used
+
+let isPlaying = false;
+
+/* ============================
+   Views counter (CountAPI) - increments on each page hit
+   ============================ */
+(function hitViews(){
+  fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
+    .then(r=>r.json())
+    .then(d=>{
+      const v = d && d.value ? d.value : 1;
+      viewEl.textContent = Number(v).toLocaleString();
+      viewCountBox.classList.add('visible');
+    })
+    .catch(err=>{
+      console.warn('CountAPI error', err);
+      // fallback to localStorage small counter
+      try{
+        let v = parseInt(localStorage.getItem('views_evrrixx')||'0',10);
+        v = v+1;
+        localStorage.setItem('views_evrrixx', String(v));
+        viewEl.textContent = v.toLocaleString();
+      }catch(e){ viewEl.textContent='1'; }
+    });
+})();
+
+/* ============================
+   Aurora fade-in + staged reveal
+   ============================ */
+function revealSequence(){
+  // show aurora
+  aurora.classList.add('visible');
+
+  // show card container
+  wrap.classList.remove('hidden');
+
+  // staged element reveals using CSS classes with delays
+  const left = document.getElementById('leftCol');
+  const right = document.getElementById('rightCol');
+  const card = document.getElementById('card');
+  // add a class to animate children with stagger
+  card.classList.add('reveal');
+}
+
+/* ============================
+   Play attempt on pointerdown (synchronous inside gesture)
+   ============================ */
+function tryPlay() {
+  // set volume from slider
+  audio.volume = parseFloat(volumeSlider.value || 0.8);
+  const p = audio.play();
+  if (p && p.then) {
+    p.then(()=> {
+      isPlaying = true;
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      cover.classList.add('playing');
+    }).catch(err=>{
+      console.warn('play blocked', err);
+      // Play will still work if user clicks Play button
+    });
+  } else {
+    // old browsers
+    isPlaying = !audio.paused;
+    if(isPlaying){ playIcon.style.display='none'; pauseIcon.style.display=''; cover.classList.add('playing'); }
+  }
+}
+
+/* overlay pointerdown: immediate play + reveal */
+overlay.addEventListener('pointerdown', (e)=>{
+  // block multi-handling
+  overlay.remove();
+  revealSequence();
+  tryPlay();
+});
+
+/* ============================
+   Play/Pause button
+   ============================ */
+playBtn.addEventListener('click', ()=>{
+  if(audio.paused){
+    audio.play().then(()=> {
+      isPlaying = true;
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      cover.classList.add('playing');
+    }).catch(err=> {
+      console.warn('play blocked', err);
+    });
+  } else {
+    audio.pause();
+    isPlaying = false;
+    playIcon.style.display = '';
+    pauseIcon.style.display = 'none';
+    cover.classList.remove('playing');
+  }
+});
+
+/* ============================
+   Mute / Volume
+   ============================ */
+muteBtn.addEventListener('click', ()=>{
+  audio.muted = !audio.muted;
+  muteBtn.innerHTML = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+});
+volumeSlider.addEventListener('input', (e)=>{
+  audio.volume = parseFloat(e.target.value);
+  if(audio.volume>0 && audio.muted){ audio.muted=false; muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>'; }
+});
+
+/* ============================
+   Progress update & seek
+   ============================ */
+audio.addEventListener('loadedmetadata', ()=>{
+  timeEl.textContent = `00:00 / ${formatTime(audio.duration)}`;
+});
+audio.addEventListener('timeupdate', ()=>{
+  const cur = audio.currentTime || 0;
+  const dur = audio.duration || 0;
+  progressBar.style.width = dur ? (cur/dur*100)+'%' : '0%';
+  timeEl.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+  progressWrap.setAttribute('aria-valuenow', Math.floor(cur));
+});
+progressWrap.addEventListener('click', (e)=>{
+  const rect = progressWrap.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const p = Math.max(0, Math.min(1, x / rect.width));
+  if(audio.duration) audio.currentTime = p * audio.duration;
+});
+function formatTime(t){
+  if(!isFinite(t) || t <= 0) return '00:00';
+  const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+/* ============================
+   Autopause on tab hide
+   ============================ */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.hidden && !audio.paused){
+    audio.pause();
+    isPlaying = false;
+    playIcon.style.display = '';
+    pauseIcon.style.display = 'none';
+    cover.classList.remove('playing');
+  }
+});
+
+/* ============================
+   Device toggle (PC / Phone) + persistence
+   ============================ */
+const deviceStateKey = 'evr_device_v1';
+const deviceBtns = document.querySelectorAll('.device-btn');
+function applyDevice(device){
+  if(device === 'phone') document.body.classList.add('device-phone');
+  else document.body.classList.remove('device-phone');
+  deviceBtns.forEach(b => b.classList.toggle('active', (b.id === (device==='phone'?'btn-phone':'btn-pc'))));
+  localStorage.setItem(deviceStateKey, device);
+}
+btnPc && btnPc.addEventListener('click', ()=> applyDevice('pc'));
+btnPhone && btnPhone.addEventListener('click', ()=> applyDevice('phone'));
+// init
+const savedDevice = localStorage.getItem(deviceStateKey) || (window.innerWidth <= 480 ? 'phone' : 'pc');
+applyDevice(savedDevice);
+
+/* ============================
+   Snow canvas (simple) — lightweight
+   ============================ */
+(function snow(){
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = innerWidth;
+  let H = canvas.height = innerHeight;
+  window.addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; });
+
+  const flakes = Array.from({length: 120}, ()=>({ x: Math.random()*W, y: Math.random()*H, r: 1+Math.random()*3, s: 0.5+Math.random()*1.5 }));
+  let t = 0;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.beginPath();
+    for(const f of flakes){
+      ctx.moveTo(f.x,f.y);
+      ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
     }
-
-    playPause.addEventListener("click", () => {
-      if (playing) {
-        audio.pause();
-        playPause.textContent = "▶️";
-      } else {
-        audio.play();
-        playPause.textContent = "⏸️";
-      }
-      playing = !playing;
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-      time.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-    });
-
-    volume.addEventListener("input", () => {
-      audio.volume = volume.value;
-    });
-
-    // === Автопауза при потере фокуса ===
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && playing) {
-        audio.pause();
-        playPause.textContent = "▶️";
-        playing = false;
-      }
-    });
-
-    // === Кнопка "Click to continue" ===
-    document.getElementById("start-screen").addEventListener("click", () => {
-      document.getElementById("start-screen").classList.add("hide");
-      document.querySelector(".container").classList.remove("hidden");
-      audio.play().catch(() => console.log("Autoplay blocked"));
-      playing = true;
-      playPause.textContent = "⏸️";
-    });
-
-    // === Счётчик просмотров (localStorage) ===
-    let views = localStorage.getItem("views_evrrixx") || 0;
-    views++;
-    localStorage.setItem("views_evrrixx", views);
-    document.getElementById("viewCount").textContent = views;
-
-    // === Переключение режима ===
-    const toggle = document.getElementById("modeToggle");
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("mobile");
-      toggle.textContent = document.body.classList.contains("mobile") ? "📱" : "💻";
-    });
-
-    // === Снег ===
-    const canvas = document.getElementById("snow");
-    const ctx = canvas.getContext("2d");
-    let w, h;
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+    ctx.fill();
+    // update
+    t += 0.01;
+    for(const f of flakes){
+      f.y += f.s + Math.sin(t + f.x*0.01)*0.3;
+      f.x += Math.cos(t*0.5 + f.y*0.005)*0.4;
+      if(f.y > H+10){ f.y = -10; f.x = Math.random()*W; }
     }
-    window.addEventListener("resize", resize);
-    resize();
-    const flakes = Array.from({length: 120}, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 3 + 1,
-      d: Math.random() + 1
-    }));
-    function drawSnow() {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
-      ctx.beginPath();
-      for (let f of flakes) ctx.moveTo(f.x, f.y), ctx.arc(f.x, f.y, f.r, 0, Math.PI*2, true);
-      ctx.fill();
-      updateSnow();
-    }
-    let angle = 0;
-    function updateSnow() {
-      angle += 0.001;
-      for (let f of flakes) {
-        f.y += Math.pow(f.d, 2) + 1;
-        f.x += Math.sin(angle) * 2;
-        if (f.y > h) { f.y = 0; f.x = Math.random() * w; }
-      }
-    }
-    setInterval(drawSnow, 25);
-  </script>
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ============================
+   Aurora fade-in is CSS-driven (class added in revealSequence)
+   ============================ */
+
+/* ============================
+   Ready
+   ============================ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  // small accessibility: allow Enter/Space to trigger overlay
+  overlay.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' ') overlay.dispatchEvent(new PointerEvent('pointerdown'));
+  });
+});
+</script>
 </body>
 </html>
