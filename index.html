@@ -1,140 +1,286 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evrrixx</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/a2d9d5a64b.js" crossorigin="anonymous"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evrrixx — profile</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome CDN (icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 </head>
 <body>
-  <!-- Экран приветствия -->
-  <div id="intro-screen">
-    <h2>Click to continue</h2>
+  <!-- TOP RIGHT: device toggle (left) + views (right) -->
+  <div class="top-right">
+    <div id="device-toggle" class="device-toggle" aria-label="Device switch">
+      <button id="btn-pc" class="device-btn" title="PC view" aria-pressed="false"><i class="fa-solid fa-desktop"></i></button>
+      <button id="btn-phone" class="device-btn" title="Phone view" aria-pressed="false"><i class="fa-solid fa-mobile-screen-button"></i></button>
+    </div>
+    <div id="view-count" class="view-count">👁️ <span id="views">0</span> views</div>
   </div>
 
-  <!-- Основной контент -->
-  <div id="content" class="hidden">
-    <div class="top-bar">
-      <div class="view-switch">
-        <span id="switch-pc">💻</span>
-        <span id="switch-mobile">📱</span>
-      </div>
-      <div class="views"><i class="fa fa-eye"></i> <span id="viewCount">0</span></div>
-    </div>
+  <!-- Overlay (must click/tap) -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true">
+    <div id="overlayBtn" class="overlay-cta">Click to continue</div>
+    <div class="overlay-hint">Tap to show site and start audio</div>
+  </div>
 
-    <div class="card">
-      <img class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="avatar" />
-      <h1 class="nick">Evrrixx</h1>
-      <p class="osu-rank">🌍 World #1.1kk | 🇺🇦 Country #22k</p>
-      <p class="desc">OSU player</p>
-      <p class="geo">
-        <a href="https://www.google.com/maps/place/Lviv" target="_blank" title="Open in Google Maps">📍 Lviv</a>
-      </p>
-
-      <div class="links">
-        <a href="https://discord.com/users/1379041675070148670" target="_blank"><i class="fab fa-discord"></i></a>
-        <a href="https://t.me/Evrrixx" target="_blank"><i class="fab fa-telegram"></i></a>
-        <a href="https://www.tiktok.com/@svalipchik" target="_blank"><i class="fab fa-tiktok"></i></a>
-        <a href="https://osu.ppy.sh/users/38462434" target="_blank"><i class="fas fa-circle"></i></a>
+  <!-- MAIN CARD -->
+  <main class="card" id="card" aria-label="Evrrixx profile card">
+    <aside class="left">
+      <div class="avatar-wrap">
+        <img id="avatar" class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="Evrrixx avatar">
       </div>
 
-      <div class="player">
-        <img class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="cover" />
-        <audio id="audio" preload="auto">
-          <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
-        </audio>
-        <div class="controls">
-          <button id="playPause"><i class="fa fa-play"></i></button>
-          <input type="range" id="progress" value="0" max="100" />
-          <span id="time">0:00 / 0:00</span>
-          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" />
-          <button id="mute"><i class="fa fa-volume-up"></i></button>
+      <div class="profile-meta">
+        <div class="nick">Evrrixx</div>
+        <div class="meta">OSU player • <a id="mapsLink" href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener" title="Open Lviv in Google Maps">📍 Lviv</a></div>
+
+        <div class="osu-stats" aria-hidden="true">
+          <span class="stat">🌍 World <strong>#1.1kk</strong></span>
+          <span class="sep">|</span>
+          <span class="stat">🇺🇦 Country <strong>#22k</strong></span>
         </div>
       </div>
-    </div>
-  </div>
+
+      <div id="neonButtons" class="neon-buttons">
+        <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" rel="noopener" title="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a class="btn" href="https://t.me/Evrrixx" target="_blank" rel="noopener" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" rel="noopener" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" rel="noopener" title="Osu"><i class="fa-solid fa-circle"></i></a>
+      </div>
+    </aside>
+
+    <section class="right">
+      <header class="top-row">
+        <div>
+          <div id="nickLarge" class="nick-large">Evrrixx</div>
+          <div class="small-meta">OSU player</div>
+        </div>
+        <div class="views-inline" aria-hidden="true">👁️ <span id="views-inline">0</span></div>
+      </header>
+
+      <p class="bio"><strong>Location</strong></p>
+
+      <!-- PLAYER -->
+      <div id="player" class="player" role="region" aria-label="audio player">
+        <img id="trackCover" class="track-cover-inline" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
+        <div class="player-body">
+          <div class="track-title">baby cute — универ</div>
+
+          <div id="progressWrap" class="progress-wrap" title="Click to seek">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+
+          <div class="player-controls">
+            <button id="playBtn" class="control playbtn" aria-label="Play/Pause"><i class="fa-solid fa-play"></i></button>
+            <div class="time"><span id="currentTime">0:00</span> / <span id="totalTime">0:00</span></div>
+
+            <div class="vol-wrap">
+              <button id="muteBtn" class="control mute" aria-label="Mute/Unmute"><i class="fa-solid fa-volume-high"></i></button>
+              <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+            </div>
+          </div>
+
+          <!-- If autoplay blocked, this overlay play hint appears -->
+          <div id="playHint" class="play-hint hidden">
+            <button id="hintPlayBtn" class="hint-play">Play</button>
+            <div class="hint-text">If audio didn't start, press Play</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- AUDIO ELEMENT (created in DOM before any click) -->
+  <audio id="audio" preload="metadata" crossorigin="anonymous">
+    <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
+  </audio>
 
   <script>
-    const intro = document.getElementById('intro-screen');
-    const content = document.getElementById('content');
-    const audio = document.getElementById('audio');
-    const playPause = document.getElementById('playPause');
-    const progress = document.getElementById('progress');
-    const timeDisplay = document.getElementById('time');
-    const volume = document.getElementById('volume');
-    const mute = document.getElementById('mute');
-    let isPlaying = false;
+  // ======= DOM refs =======
+  const overlay = document.getElementById('overlay');
+  const overlayBtn = document.getElementById('overlayBtn');
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const volumeSlider = document.getElementById('volume');
+  const progressBar = document.getElementById('progressBar');
+  const progressWrap = document.getElementById('progressWrap');
+  const currentTimeEl = document.getElementById('currentTime');
+  const totalTimeEl = document.getElementById('totalTime');
+  const playHint = document.getElementById('playHint');
+  const hintPlayBtn = document.getElementById('hintPlayBtn');
+  const viewCountEl = document.getElementById('views');
+  const viewCountInline = document.getElementById('views-inline');
+  const viewCountBox = document.getElementById('view-count');
+  const btnPc = document.getElementById('btn-pc');
+  const btnPhone = document.getElementById('btn-phone');
 
-    // ✅ Полностью рабочий запуск
-    intro.addEventListener('click', async () => {
-      intro.style.display = 'none';
-      content.classList.remove('hidden');
-      content.classList.add('fade-in');
-      try {
-        await audio.play();
+  let isPlaying = false;
+  let userInteracted = false;
+
+  // ======= Utility: format seconds -> M:SS =======
+  function fmtTime(t) {
+    if (!isFinite(t) || t <= 0) return '0:00';
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  // ======= CountAPI (live views) =======
+  fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
+    .then(r => r.json())
+    .then(d => {
+      const v = d && d.value ? d.value : 1;
+      viewCountEl.textContent = Number(v).toLocaleString();
+      viewCountInline.textContent = Number(v).toLocaleString();
+      viewCountBox.classList.add('visible');
+    }).catch(err => {
+      viewCountEl.textContent = '1';
+      viewCountInline.textContent = '1';
+      viewCountBox.classList.add('visible');
+      console.warn('CountAPI error', err);
+    });
+
+  // ======= Play attempt function (called synchronously on pointerdown) =======
+  function tryPlayAudioDirectly() {
+    // mark interaction for later
+    userInteracted = true;
+
+    // attempt to play (this call is made inside user gesture)
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
         isPlaying = true;
-        playPause.innerHTML = '<i class="fa fa-pause"></i>';
-      } catch (e) {
-        console.log("Autoplay blocked, user can click play.");
-      }
-    });
-
-    playPause.addEventListener('click', () => {
-      if (isPlaying) {
-        audio.pause();
-        playPause.innerHTML = '<i class="fa fa-play"></i>';
-      } else {
-        audio.play();
-        playPause.innerHTML = '<i class="fa fa-pause"></i>';
-      }
-      isPlaying = !isPlaying;
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
-        progress.value = (audio.currentTime / audio.duration) * 100;
-        const cur = Math.floor(audio.currentTime);
-        const dur = Math.floor(audio.duration);
-        const fmt = t => `${Math.floor(t/60)}:${('0'+t%60).slice(-2)}`;
-        timeDisplay.textContent = `${fmt(cur)} / ${fmt(dur)}`;
-      }
-    });
-
-    progress.addEventListener('input', () => {
-      audio.currentTime = (progress.value / 100) * audio.duration;
-    });
-
-    volume.addEventListener('input', () => audio.volume = volume.value);
-
-    mute.addEventListener('click', () => {
-      audio.muted = !audio.muted;
-      mute.innerHTML = audio.muted ? '<i class="fa fa-volume-mute"></i>' : '<i class="fa fa-volume-up"></i>';
-    });
-
-    // ⏸ Автопауза при уходе со вкладки
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && !audio.paused) audio.pause();
-    });
-
-    // 👁️ Счётчик просмотров
-    fetch('https://api.countapi.xyz/hit/evrrixx-site/views')
-      .then(res => res.json())
-      .then(data => document.getElementById('viewCount').textContent = data.value);
-
-    // 💻📱 Переключатель
-    const pc = document.getElementById('switch-pc');
-    const mobile = document.getElementById('switch-mobile');
-
-    function setView(mode) {
-      document.body.className = mode;
-      localStorage.setItem('viewMode', mode);
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        playHint.classList.add('hidden');
+      }).catch(err => {
+        // If still blocked — show in-UI Play hint button
+        console.warn('Play promise rejected:', err);
+        playHint.classList.remove('hidden');
+      });
+    } else {
+      // old browsers — just show hint if nothing happened
+      playHint.classList.remove('hidden');
     }
+  }
 
-    pc.addEventListener('click', () => setView('pc'));
-    mobile.addEventListener('click', () => setView('mobile'));
-    const saved = localStorage.getItem('viewMode');
-    if (saved) document.body.className = saved;
+  // ======= Overlay: use pointerdown (works for mouse + touch) =======
+  // We attach to the overlay element so this is a direct user gesture.
+  overlay.addEventListener('pointerdown', function onPointer(e) {
+    // Remove handler to avoid double firing
+    overlay.removeEventListener('pointerdown', onPointer);
+    // Immediately try to play (synchronous in gesture)
+    tryPlayAudioDirectly();
+    // Hide overlay immediately (so UX feels instant). If play was blocked, the in-player Play hint appears.
+    overlay.classList.add('hidden');
+  });
+
+  // Also handle keyboard Enter on overlay for accessibility
+  overlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      tryPlayAudioDirectly();
+      overlay.classList.add('hidden');
+    }
+  });
+
+  // ======= If audio didn't start, allow hint button to start it =======
+  hintPlayBtn.addEventListener('click', () => {
+    tryPlayAudioDirectly();
+    hintPlayBtn.blur();
+  });
+
+  // ======= Play/Pause button in player =======
+  playBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().then(()=> {
+        isPlaying = true;
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      }).catch(err => {
+        console.warn('Play blocked:', err);
+        playHint.classList.remove('hidden');
+      });
+    } else {
+      audio.pause();
+      isPlaying = false;
+      playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+    }
+  });
+
+  // ======= Mute / Volume =======
+  muteBtn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    muteBtn.innerHTML = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+  });
+  volumeSlider.addEventListener('input', (e) => {
+    audio.volume = parseFloat(e.target.value);
+    if (audio.muted && audio.volume > 0) {
+      audio.muted = false;
+      muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+    }
+  });
+
+  // ======= Progress / time updates =======
+  audio.addEventListener('loadedmetadata', () => {
+    totalTimeEl.textContent = fmtTime(audio.duration || 0);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    currentTimeEl.textContent = fmtTime(audio.currentTime || 0);
+    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  });
+
+  progressWrap.addEventListener('click', (e) => {
+    if (!audio.duration) return;
+    const rect = progressWrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const p = Math.max(0, Math.min(1, x / rect.width));
+    audio.currentTime = p * audio.duration;
+  });
+
+  // ======= Autopause on tab hide =======
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !audio.paused) {
+      audio.pause();
+      playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+      isPlaying = false;
+    }
+  });
+
+  // ======= Device toggle (PC / Phone) with persistence =======
+  function applyDevice(device) {
+    if (device === 'phone') {
+      document.body.classList.add('device-phone');
+      localStorage.setItem('evr_device', 'phone');
+    } else {
+      document.body.classList.remove('device-phone');
+      localStorage.setItem('evr_device', 'pc');
+    }
+  }
+  // init
+  const saved = localStorage.getItem('evr_device') || (window.innerWidth <= 480 ? 'phone' : 'pc');
+  applyDevice(saved);
+  btnPc && btnPc.addEventListener('click', ()=> applyDevice('pc'));
+  btnPhone && btnPhone.addEventListener('click', ()=> applyDevice('phone'));
+
+  // ======= Snow effect (small) =======
+  (function makeSnow() {
+    const spawnInterval = 300;
+    function spawn() {
+      const el = document.createElement('div');
+      el.className = 'snowflake';
+      el.textContent = '❄';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (8 + Math.random() * 18) + 'px';
+      el.style.animationDuration = (8 + Math.random() * 10) + 's';
+      el.style.opacity = (0.2 + Math.random() * 0.8).toFixed(2);
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 12000);
+    }
+    setInterval(spawn, spawnInterval);
+  })();
+
   </script>
 </body>
 </html>
