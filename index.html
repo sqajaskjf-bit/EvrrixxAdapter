@@ -5,61 +5,40 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Evrrixx — profile</title>
 
-  <!-- styles -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
-
-  <!-- meta -->
   <meta name="theme-color" content="#071028">
 </head>
 <body>
-
-  <!-- ======================================================
-       👁️  Top-right controls block:
-         [PC/Mobile toggle]  [VIEW COUNT]
-       toggle is LEFT of view count as requested
-       ======================================================-->
   <div class="top-right">
-    <!-- Device toggle (left of views) -->
-    <div id="device-toggle" class="device-toggle" title="Switch site view (PC / Phone)" aria-label="Device toggle" role="group">
+    <div id="device-toggle" class="device-toggle">
       <button id="btn-pc" class="device-btn" aria-pressed="false" title="PC view"><i class="fa-solid fa-desktop"></i></button>
       <button id="btn-phone" class="device-btn" aria-pressed="false" title="Phone view"><i class="fa-solid fa-mobile-screen-button"></i></button>
     </div>
-
-    <!-- 👁️ Live view counter (CountAPI) -->
-    <div id="view-count" aria-live="polite" title="Views">👁️ <span id="views">0</span> views</div>
+    <div id="view-count">👁️ <span id="views">0</span> views</div>
   </div>
 
-  <!-- Overlay (user must click to allow playback) -->
-  <div id="overlay" role="dialog" aria-modal="true">
+  <div id="overlay">
     <div class="overlay-cta">Click to continue</div>
-    <div class="overlay-hint">Press to show site and start audio</div>
+    <div class="overlay-hint">Tap to show site and play music</div>
   </div>
 
-  <!-- Main card -->
-  <main class="card" id="card" role="main" aria-label="Evrrixx profile card">
+  <main class="card" id="card">
     <aside class="left">
-      <!-- Avatar (fallback handled in JS) -->
       <div class="avatar-wrap">
         <img id="avatar" class="avatar" src="https://avatars.mds.yandex.net/i?id=37e394a9871b342e37f3dca00c22c825e9bf71b8-5886795-images-thumbs&n=13" alt="Evrrixx avatar">
       </div>
 
-      <!-- small meta -->
       <div class="profile-meta">
         <div class="nick">Evrrixx</div>
         <div class="meta">OSU player • Lviv</div>
       </div>
 
-      <!-- Social buttons (icons only) -->
-      <div id="neonButtons" class="neon-buttons" aria-label="Social links">
-        <a class="btn" href="https://discord.com/users/1379041675070148670" title="Discord" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i></a>
-        <a class="btn" href="https://t.me/Evrrixx" title="Telegram" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i></a>
-        <a class="btn" href="https://www.tiktok.com/@svalipchik" title="TikTok" target="_blank" rel="noopener"><i class="fa-brands fa-tiktok"></i></a>
-        <a class="btn" href="https://osu.ppy.sh/users/38462434" title="Osu!" target="_blank" rel="noopener"><i class="fa-solid fa-circle"></i></a>
-        <!-- copy discord ID button -->
-        <button id="copyDiscord" class="btn" title="Copy Discord ID" aria-label="Copy Discord ID"><i class="fa-regular fa-copy"></i></button>
+      <div id="neonButtons" class="neon-buttons">
+        <a class="btn" href="https://discord.com/users/1379041675070148670" title="Discord" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a class="btn" href="https://t.me/Evrrixx" title="Telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+        <a class="btn" href="https://www.tiktok.com/@svalipchik" title="TikTok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="btn" href="https://osu.ppy.sh/users/38462434" title="Osu!" target="_blank"><i class="fa-solid fa-circle"></i></a>
       </div>
     </aside>
 
@@ -69,309 +48,82 @@
           <div id="nickLarge" class="nick-large">Evrrixx</div>
           <div class="small-meta">OSU player</div>
         </div>
-        <div class="views-inline" aria-hidden="true">👁️ <span id="views-inline">0</span></div>
+        <div class="views-inline">👁️ <span id="views-inline">0</span></div>
       </header>
 
       <p class="bio"><strong>Гео:</strong> Lviv</p>
 
-      <!-- =========================
-           🎧 Player block (controls, progress, cover)
-           ========================= -->
-      <div id="player" class="player" role="region" aria-label="audio player">
-        <!-- cover -->
+      <div id="player" class="player">
         <img id="trackCover" class="track-cover-inline" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
-
         <div class="player-body">
           <div class="track-info">
             <div class="track-title">baby cute — универ</div>
             <div class="track-sub">track</div>
           </div>
 
-          <!-- progress -->
-          <div id="progressWrap" class="progress-wrap" title="Click to seek">
+          <div id="progressWrap" class="progress-wrap">
             <div id="progressBar" class="progress-bar"></div>
           </div>
 
-          <!-- controls row -->
           <div class="player-controls">
-            <button id="playBtn" class="control playbtn" aria-label="Play/Pause"><i class="fa-solid fa-play"></i></button>
-
+            <button id="playBtn" class="control playbtn"><i class="fa-solid fa-play"></i></button>
             <div class="time"><span id="currentTime">0:00</span> / <span id="totalTime">0:00</span></div>
-
             <div class="vol-wrap">
-              <button id="muteBtn" class="control mutebtn" aria-label="Mute/Unmute"><i class="fa-solid fa-volume-high"></i></button>
-              <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+              <button id="muteBtn" class="control mutebtn"><i class="fa-solid fa-volume-high"></i></button>
+              <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8">
             </div>
           </div>
         </div>
       </div>
-
-      <footer class="card-footer">
-        <div class="credit">Адаптировано: guns.lol — neon card</div>
-        <div class="updated">last updated • now</div>
-      </footer>
     </section>
   </main>
 
-  <!-- =========================
-       Script: player, countapi, UI logic
-       ========================= -->
   <script>
-  /* ======================
-     CONFIG
-     ====================== */
   const MP3_URL = "https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/";
-  const COUNT_NAMESPACE = "evrrixx-bio";
-  const COUNT_KEY = "views";
-  const DISCORD_ID = "1379041675070148670"; // for copy button
+  const audio = new Audio(MP3_URL);
+  audio.preload = "metadata";
+  audio.volume = 0.8;
+  audio.crossOrigin = "anonymous";
 
-  /* ======================
-     DOM refs
-     ====================== */
   const overlay = document.getElementById('overlay');
-  const card = document.getElementById('card');
-  const neonButtons = document.getElementById('neonButtons');
-  const nickLarge = document.getElementById('nickLarge');
-  const playerEl = document.getElementById('player');
   const playBtn = document.getElementById('playBtn');
   const muteBtn = document.getElementById('muteBtn');
   const volumeSlider = document.getElementById('volume');
   const progressWrap = document.getElementById('progressWrap');
   const progressBar = document.getElementById('progressBar');
-  const currentTime = document.getElementById('currentTime');
-  const totalTime = document.getElementById('totalTime');
-  const views = document.getElementById('views');
-  const viewsInline = document.getElementById('views-inline');
-  const viewCountBox = document.getElementById('view-count');
-  const btnPc = document.getElementById('btn-pc');
-  const btnPhone = document.getElementById('btn-phone');
-  const deviceToggle = document.getElementById('device-toggle');
-  const avatar = document.getElementById('avatar');
-  const copyBtn = document.getElementById('copyDiscord');
+  const currentTimeEl = document.getElementById('currentTime');
+  const totalTimeEl = document.getElementById('totalTime');
   const trackCover = document.getElementById('trackCover');
+  const playerEl = document.getElementById('player');
 
-  /* ======================
-     AUDIO setup
-     ====================== */
-  const audio = new Audio();
-  audio.src = MP3_URL;
-  audio.preload = "metadata";
-  audio.crossOrigin = "anonymous";
-  audio.volume = parseFloat(volumeSlider.value || 0.8);
+  function fmtTime(t){if(!isFinite(t))return"0:00";const m=Math.floor(t/60),s=Math.floor(t%60).toString().padStart(2,"0");return`${m}:${s}`;}
 
-  /* helper: format seconds to M:SS */
-  function fmtTime(t){
-    if(!isFinite(t) || t <= 0) return "0:00";
-    const m = Math.floor(t/60);
-    const s = Math.floor(t % 60).toString().padStart(2,'0');
-    return `${m}:${s}`;
-  }
-
-  /* ======================
-     CountAPI — increment and show global views
-     ====================== */
-  (function hitCount(){
-    // using countapi to increment on each visit
-    fetch(`https://api.countapi.xyz/hit/${COUNT_NAMESPACE}/${COUNT_KEY}`)
-      .then(r => r.json())
-      .then(data => {
-        const v = data && data.value ? data.value : 1;
-        views.textContent = Number(v).toLocaleString();
-        viewsInline.textContent = Number(v).toLocaleString();
-        viewCountBox.classList.add('visible');
-      })
-      .catch(err => {
-        console.warn('CountAPI error', err);
-        views.textContent = '1';
-        viewsInline.textContent = '1';
-        viewCountBox.classList.add('visible');
-      });
-  })();
-
-  /* ======================
-     Fade-in sequence delays (ms)
-     ====================== */
-  const TIMINGS = { nick:300, buttons:500, player:800, view:1200 };
-
-  /* ======================
-     Device toggle (PC / Phone) + persist
-     - state saved in localStorage 'evr_device'
-     ====================== */
-  function applyDevice(device){
-    document.documentElement.setAttribute('data-device', device); // used by CSS
-    // smaller scale for mobile mode (we only reduce sizes, not major layout)
-    if(device === 'phone'){
-      document.body.classList.add('device-phone');
-      btnPhone.classList.add('active');
-      btnPc.classList.remove('active');
-      btnPhone.setAttribute('aria-pressed','true');
-      btnPc.setAttribute('aria-pressed','false');
-    } else {
-      document.body.classList.remove('device-phone');
-      btnPc.classList.add('active');
-      btnPhone.classList.remove('active');
-      btnPc.setAttribute('aria-pressed','true');
-      btnPhone.setAttribute('aria-pressed','false');
-    }
-    localStorage.setItem('evr_device', device);
-  }
-  // read saved preference
-  const savedDevice = localStorage.getItem('evr_device') || (window.innerWidth <= 480 ? 'phone' : 'pc');
-  applyDevice(savedDevice);
-  // toggle handlers
-  btnPc.addEventListener('click', ()=> applyDevice('pc'));
-  btnPhone.addEventListener('click', ()=> applyDevice('phone'));
-
-  // small hover animation for device toggle (handled by CSS)
-
-  /* ======================
-     Overlay click: reveal UI & start audio
-     ====================== */
-  overlay.addEventListener('click', () => {
-    overlay.style.opacity = '0';
-    setTimeout(()=> overlay.remove(), 700);
-    card.classList.add('visible');
-    // sequential reveals
-    setTimeout(()=> nickLarge.classList.add('visible'), TIMINGS.nick);
-    setTimeout(()=> neonButtons.classList.add('visible'), TIMINGS.buttons);
-    setTimeout(()=> playerEl.classList.add('visible'), TIMINGS.player);
-    setTimeout(()=> viewCountBox.classList.add('visible'), TIMINGS.view);
-
-    // attempt to play (user gesture)
-    audio.volume = parseFloat(volumeSlider.value || 0.8);
-    audio.play().then(()=> {
-      playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      playerEl.classList.add('playing');
-      trackCover.classList.add('glow');
-    }).catch(err => {
-      console.warn('autoplay blocked', err);
-    });
-  });
-
-  /* ======================
-     Play / Pause
-     ====================== */
-  playBtn.addEventListener('click', () => {
-    if(audio.paused){
-      audio.play().then(()=> {
-        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-        playerEl.classList.add('playing');
-        trackCover.classList.add('glow');
-      }).catch(err => {
-        alert('Playback blocked: click "Click to continue" first.');
-      });
-    } else {
-      audio.pause();
-      playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-      playerEl.classList.remove('playing');
-      trackCover.classList.remove('glow');
-    }
-  });
-
-  /* ======================
-     Mute / Volume
-     ====================== */
-  muteBtn.addEventListener('click', ()=> {
-    audio.muted = !audio.muted;
-    muteBtn.innerHTML = audio.muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
-    volumeSlider.classList.toggle('muted', audio.muted);
-  });
-
-  volumeSlider.addEventListener('input', (e)=> {
-    audio.volume = parseFloat(e.target.value);
-    if(audio.muted && audio.volume > 0) {
-      audio.muted = false;
-      muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-      volumeSlider.classList.remove('muted');
-    }
-  });
-
-  /* ======================
-     Duration / Time updates / Progress
-     ====================== */
-  audio.addEventListener('loadedmetadata', ()=> {
-    totalTime.textContent = fmtTime(audio.duration);
-  });
-
-  audio.addEventListener('timeupdate', ()=> {
-    currentTime.textContent = fmtTime(audio.currentTime);
-    const pct = (audio.currentTime / audio.duration) * 100 || 0;
-    progressBar.style.width = pct + '%';
-  });
-
-  // progress seek
-  progressWrap.addEventListener('click', (e)=> {
-    if(!audio.duration) return;
-    const rect = progressWrap.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const p = Math.max(0, Math.min(1, x / rect.width));
-    audio.currentTime = p * audio.duration;
-  });
-
-  /* ======================
-     Auto-pause on tab hide
-     ====================== */
-  document.addEventListener('visibilitychange', ()=> {
-    if(document.hidden){
-      if(!audio.paused){
-        audio.pause();
-        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-        playerEl.classList.remove('playing');
-        trackCover.classList.remove('glow');
-      }
-    }
-  });
-
-  /* ======================
-     Snow generator
-     ====================== */
-  (function makeSnow(){
-    const spawn = ()=> {
-      const s = document.createElement('div');
-      s.className = 'snowflake';
-      s.textContent = '❄';
-      s.style.left = (Math.random()*100) + 'vw';
-      s.style.fontSize = (8 + Math.random()*18) + 'px';
-      s.style.opacity = (0.2 + Math.random()*0.9).toFixed(2);
-      s.style.animationDuration = (8 + Math.random()*10) + 's';
-      document.body.appendChild(s);
-      setTimeout(()=> s.remove(), 12000);
-    };
-    setInterval(spawn, 260);
-  })();
-
-  /* ======================
-     Copy Discord ID button
-     ====================== */
-  copyBtn.addEventListener('click', async ()=> {
+  overlay.addEventListener('click', async ()=>{
+    overlay.style.opacity='0';
+    setTimeout(()=>overlay.remove(),600);
+    document.getElementById('card').classList.add('visible');
+    setTimeout(()=>document.getElementById('nickLarge').classList.add('visible'),200);
+    setTimeout(()=>document.getElementById('neonButtons').classList.add('visible'),400);
+    setTimeout(()=>playerEl.classList.add('visible'),600);
     try{
-      await navigator.clipboard.writeText(DISCORD_ID);
-      copyBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-      setTimeout(()=> copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>', 1500);
-    }catch(e){
-      alert('Cannot copy (browser blocked). ID: ' + DISCORD_ID);
-    }
+      await audio.play();
+      playBtn.innerHTML='<i class="fa-solid fa-pause"></i>';
+      trackCover.classList.add('glow');
+    }catch(e){console.log('Autoplay blocked:',e);}
   });
 
-  /* ======================
-     Avatar fallback
-     ====================== */
-  avatar.addEventListener('error', ()=> {
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%' height='100%' fill='#070618'/><circle cx='200' cy='140' r='90' fill='#7afcff'/><text x='50%' y='76%' fill='white' font-size='40' font-family='Arial' text-anchor='middle'>Evrrixx</text></svg>`;
-    avatar.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  playBtn.addEventListener('click',()=>{
+    if(audio.paused){audio.play();playBtn.innerHTML='<i class="fa-solid fa-pause"></i>';trackCover.classList.add('glow');}
+    else{audio.pause();playBtn.innerHTML='<i class="fa-solid fa-play"></i>';trackCover.classList.remove('glow');}
   });
-
-  /* ======================
-     Accessibility: space toggles play/pause
-     ====================== */
-  document.addEventListener('keydown', (e)=> {
-    if(e.code === 'Space' && (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA')){
-      e.preventDefault();
-      playBtn.click();
-    }
-  });
-
-  /* END SCRIPT */
+  muteBtn.addEventListener('click',()=>{audio.muted=!audio.muted;muteBtn.innerHTML=audio.muted?'<i class="fa-solid fa-volume-xmark"></i>':'<i class="fa-solid fa-volume-high"></i>';});
+  volumeSlider.addEventListener('input',e=>{audio.volume=parseFloat(e.target.value);});
+  audio.addEventListener('loadedmetadata',()=>{totalTimeEl.textContent=fmtTime(audio.duration);});
+  audio.addEventListener('timeupdate',()=>{currentTimeEl.textContent=fmtTime(audio.currentTime);progressBar.style.width=(audio.currentTime/audio.duration*100)+'%';});
+  progressWrap.addEventListener('click',e=>{const rect=progressWrap.getBoundingClientRect();const p=(e.clientX-rect.left)/rect.width;audio.currentTime=p*audio.duration;});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)audio.pause();});
+  (function snow(){const s=()=>{const e=document.createElement('div');e.className='snowflake';e.textContent='❄';e.style.left=Math.random()*100+'vw';e.style.fontSize=(8+Math.random()*18)+'px';e.style.animationDuration=(8+Math.random()*10)+'s';document.body.append(e);setTimeout(()=>e.remove(),12000);};setInterval(s,260);})();
+  (function views(){fetch('https://api.countapi.xyz/hit/evrrixx-bio/views').then(r=>r.json()).then(d=>{document.getElementById('views').textContent=d.value;document.getElementById('views-inline').textContent=d.value;document.getElementById('view-count').classList.add('visible');});})();
   </script>
 </body>
 </html>
