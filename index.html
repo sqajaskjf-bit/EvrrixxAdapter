@@ -8,73 +8,71 @@
   <meta name="referrer" content="no-referrer">
 </head>
 <body>
-
-  <!-- AURORA (background glow) -->
+  <!-- Aurora glow (background) -->
   <div id="aurora" class="aurora" aria-hidden="true"></div>
 
-  <!-- SNOW CANVAS -->
+  <!-- Snow canvas -->
   <canvas id="snow" aria-hidden="true"></canvas>
 
-  <!-- TOP: device toggle + views -->
+  <!-- Top controls -->
   <div class="top-right" role="region" aria-label="Controls">
     <div class="device-toggle" role="tablist" aria-label="Display mode">
       <button id="btn-pc" class="device-btn" title="PC view" aria-pressed="true" aria-label="Desktop view">💻</button>
-      <button id="btn-phone" class="device-btn" title="Mobile view" aria-pressed="false" aria-label="Mobile view">📱</button>
+      <button id="btn-phone" class="device-btn" title="Phone view" aria-pressed="false" aria-label="Mobile view">📱</button>
     </div>
     <div id="view-count" class="view-count" aria-live="polite">👁️ <span id="views">0</span></div>
   </div>
 
-  <!-- OVERLAY - user must interact to allow audio -->
+  <!-- Overlay — must interact to allow autoplay -->
   <div id="overlay" class="overlay" role="dialog" aria-modal="true" tabindex="0">
-    <div class="overlay-inner" role="button" aria-label="Start">
+    <div class="overlay-inner" tabindex="0">
       <div class="overlay-cta">Click to continue</div>
       <div class="overlay-sub">Tap anywhere to reveal profile & start music</div>
     </div>
   </div>
 
-  <!-- MAIN WRAPPER (hidden until reveal) -->
+  <!-- Main wrapper -->
   <main id="wrap" class="wrap hidden" role="main" aria-label="Evrrixx profile card">
     <article class="card" id="card" aria-live="polite">
-      <!-- LEFT: avatar + quick meta + socials -->
+      <!-- LEFT: avatar + meta + socials -->
       <aside class="left" id="leftCol">
         <div class="avatar-wrap">
-          <!-- local avatar file -->
+          <!-- put local avatar file in same folder -->
           <img id="avatar" class="avatar" src="photo_2025-10-28_18-09-54.jpg" alt="Evrrixx avatar">
         </div>
 
-        <div class="profile-info">
+        <div class="info">
           <div class="nick" id="nickSmall">Evrrixx</div>
           <div class="meta">OSU player</div>
           <div class="geo">
             <a class="geo-link" href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener noreferrer" title="Open Lviv in Google Maps">
-              <span class="dot" aria-hidden="true">📍</span> Lviv
+              <span aria-hidden>📍</span> Lviv
             </a>
           </div>
           <div class="osu-stats">🌍 <strong>World</strong> #1.1kk &nbsp; • &nbsp; 🇺🇦 <strong>Country</strong> #22k</div>
         </div>
 
         <div class="neon-buttons" id="socials">
-          <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" rel="noopener" title="Discord"><i aria-hidden>🗨️</i><span class="sr-only">Discord</span></a>
-          <a class="btn" href="https://t.me/Evrrixx" target="_blank" rel="noopener" title="Telegram"><i aria-hidden>✈️</i><span class="sr-only">Telegram</span></a>
-          <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" rel="noopener" title="TikTok"><i aria-hidden>🎵</i><span class="sr-only">TikTok</span></a>
-          <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" rel="noopener" title="Osu"><i aria-hidden>⭕</i><span class="sr-only">Osu</span></a>
+          <a class="btn" href="https://discord.com/users/1379041675070148670" target="_blank" rel="noopener" title="Discord"> <span aria-hidden>🗨️</span><span class="sr-only">Discord</span></a>
+          <a class="btn" href="https://t.me/Evrrixx" target="_blank" rel="noopener" title="Telegram"> <span aria-hidden>✈️</span><span class="sr-only">Telegram</span></a>
+          <a class="btn" href="https://www.tiktok.com/@svalipchik" target="_blank" rel="noopener" title="TikTok"> <span aria-hidden>🎵</span><span class="sr-only">TikTok</span></a>
+          <a class="btn" href="https://osu.ppy.sh/users/38462434" target="_blank" rel="noopener" title="Osu"> <span aria-hidden>⭕</span><span class="sr-only">Osu</span></a>
         </div>
       </aside>
 
-      <!-- RIGHT: main info + player -->
+      <!-- RIGHT: main info & player -->
       <section class="right" id="rightCol">
         <div class="title-row">
           <div class="title-left">
             <div class="nick-large" id="nickLarge">Evrrixx</div>
             <div class="title-sub">OSU player</div>
           </div>
-
           <div class="views-inline" aria-hidden="true">👁️ <span id="views-inline">0</span></div>
         </div>
 
         <p class="bio"><strong>Гео:</strong> <a class="geo-inline" href="https://www.google.com/maps/place/Lviv" target="_blank" rel="noopener noreferrer">Lviv</a></p>
 
-        <!-- PLAYER (full width) -->
+        <!-- Player area -->
         <div class="player" id="playerArea" role="region" aria-label="Music player">
           <img id="cover" class="cover" src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="track cover">
           <div class="player-body">
@@ -88,8 +86,12 @@
             </div>
 
             <div class="controls">
-              <button id="playBtn" class="playbtn" aria-label="Play pause"><span id="playIcon">▶</span><span id="pauseIcon" style="display:none">⏸</span></button>
+              <button id="playBtn" class="playbtn" aria-label="Play/pause">
+                <span id="playIcon">▶</span><span id="pauseIcon" style="display:none">⏸</span>
+              </button>
+
               <div class="time" id="time">00:00 / 00:00</div>
+
               <div class="volume-control">
                 <button id="muteBtn" class="mute" aria-label="Mute"><span id="muteIcon">🔊</span></button>
                 <input id="volume" class="volume-slider" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
@@ -105,15 +107,13 @@
     </article>
   </main>
 
-  <!-- AUDIO element -->
+  <!-- Audio element -->
   <audio id="audio" preload="metadata" crossorigin="anonymous">
     <source src="https://sefon.pro/api/mp3_download/direct/1362072/3vUCAL9SUTYUJlpqN96WmNiAVCIkVxwbfrpr1nc34l9vjo7WZbWMezr6WL9BMVq0tHqmbpdsiBmSi1pqocPzFN58ejf8EBJJwkPbEh3iQhHt9sLRFfef4pIcMNiie8U2AI0x7_Ei0ub0xroANdPEMrWr0xjdHUfGSpnN8EoQ/" type="audio/mpeg">
   </audio>
 
 <script>
-/* ============================
-   DOM refs
-   ============================ */
+/* ---------- DOM refs ---------- */
 const overlay = document.getElementById('overlay');
 const aurora = document.getElementById('aurora');
 const wrap = document.getElementById('wrap');
@@ -133,29 +133,26 @@ const viewsEl = document.getElementById('views');
 const viewsInline = document.getElementById('views-inline');
 const viewCountWrap = document.getElementById('view-count');
 const btnPc = document.getElementById('btn-pc');
-const btnPhone = document.getElementById('btn-phone'); // may be null
+const btnPhone = document.getElementById('btn-phone'); // optional
 const deviceBtns = document.querySelectorAll('.device-btn');
 
 let isPlaying = false;
 let duration = 0;
 
-/* ============================
-   Views counter (CountAPI with fallback)
-   ============================ */
+/* ---------- Views counter (CountAPI fallback) ---------- */
 (function hitViews(){
   fetch('https://api.countapi.xyz/hit/evrrixx-bio/views')
-    .then(r => r.json())
-    .then(d => {
+    .then(r=>r.json())
+    .then(d=>{
       const v = d && d.value ? d.value : 1;
       viewsEl.textContent = Number(v).toLocaleString();
       viewsInline.textContent = Number(v).toLocaleString();
       viewCountWrap.classList.add('visible');
-    })
-    .catch(err=>{
+    }).catch(err=>{
       console.warn('CountAPI error', err);
       try{
         let v = parseInt(localStorage.getItem('views_evrrixx')||'0',10);
-        v = v+1;
+        v = v + 1;
         localStorage.setItem('views_evrrixx', String(v));
         viewsEl.textContent = v.toLocaleString();
         viewsInline.textContent = v.toLocaleString();
@@ -166,23 +163,19 @@ let duration = 0;
     });
 })();
 
-/* ============================
-   Reveal sequence (staged fade-in) + aurora show
-   ============================ */
+/* ---------- Reveal sequence + aurora ---------- */
 function revealSequence(){
   aurora.classList.add('visible');
   wrap.classList.remove('hidden');
-  // add 'reveal' to card to start CSS stagger animations
+  // add reveal class to card - CSS handles staggered children
   card.classList.add('reveal');
 }
 
-/* ============================
-   Play attempt inside user gesture
-   (start from beginning as requested)
-   ============================ */
+/* ---------- Play from start inside user gesture ---------- */
 function tryPlayFromStart(){
-  try{ audio.currentTime = 0; }catch(e){}
-  audio.volume = 0; // start muted and fade in for better UX
+  try{ audio.currentTime = 0; } catch(e){}
+  // start with muted-ish volume and fade in
+  audio.volume = 0;
   const p = audio.play();
   if(p && p.then){
     p.then(()=>{
@@ -190,17 +183,17 @@ function tryPlayFromStart(){
       playIcon.style.display = 'none';
       pauseIcon.style.display = '';
       cover.classList.add('playing');
-      // fade-in volume
+      // fade volume to 0.8
       let v = 0;
-      const volStep = 0.02;
-      const fade = setInterval(()=>{
-        v = Math.min(0.8, v + volStep);
+      const step = 0.02;
+      const t = setInterval(()=>{
+        v = Math.min(0.8, v + step);
         audio.volume = v;
         volumeSlider.value = v.toFixed(2);
-        if(v >= 0.8) clearInterval(fade);
-      }, 120);
+        if(v >= 0.8) clearInterval(t);
+      }, 110);
     }).catch(err=>{
-      console.warn('Play blocked:', err);
+      console.warn('play blocked', err);
     });
   } else {
     // fallback
@@ -208,29 +201,25 @@ function tryPlayFromStart(){
   }
 }
 
-/* overlay: pointerdown is considered user gesture */
+/* overlay gesture */
 overlay.addEventListener('pointerdown', (e)=>{
-  // vibrate on mobile (only once)
-  if(navigator.vibrate) try{ navigator.vibrate(80); }catch(e){}
-  // immediately hide overlay (fade)
+  // vibrate once on mobile
+  if('vibrate' in navigator) try{ navigator.vibrate(80); } catch(e){}
+  // fade and remove overlay
   overlay.classList.add('fade-out');
   setTimeout(()=> overlay.remove(), 320);
 
-  // reveal visuals
+  // reveal visuals and try to play
   revealSequence();
-
-  // synchronous attempt to start audio from start
   tryPlayFromStart();
 });
 
-/* keyboard accessibility for overlay */
+/* keyboard accessibility */
 overlay.addEventListener('keydown', (e)=>{
   if(e.key === 'Enter' || e.key === ' ') overlay.dispatchEvent(new PointerEvent('pointerdown'));
 });
 
-/* ============================
-   Play/Pause button
-   ============================ */
+/* ---------- Play/Pause ---------- */
 playBtn.addEventListener('click', ()=>{
   if(audio.paused){
     audio.play().then(()=> {
@@ -248,9 +237,7 @@ playBtn.addEventListener('click', ()=>{
   }
 });
 
-/* ============================
-   Volume & mute
-   ============================ */
+/* ---------- Volume & Mute ---------- */
 muteBtn.addEventListener('click', ()=>{
   audio.muted = !audio.muted;
   muteIcon.textContent = audio.muted ? '🔇' : '🔊';
@@ -260,9 +247,7 @@ volumeSlider.addEventListener('input', (e)=>{
   if(audio.volume > 0 && audio.muted){ audio.muted = false; muteIcon.textContent = '🔊'; }
 });
 
-/* ============================
-   Progress bar + time updates
-   ============================ */
+/* ---------- Progress & Time ---------- */
 audio.addEventListener('loadedmetadata', ()=>{
   duration = audio.duration || 0;
   timeEl.textContent = `00:00 / ${formatTime(duration)}`;
@@ -283,13 +268,11 @@ progressWrap.addEventListener('click', (e)=>{
 });
 function formatTime(t){
   if(!isFinite(t) || t <= 0) return '00:00';
-  const m = Math.floor(t / 60), s = Math.floor(t % 60).toString().padStart(2,'0');
+  const m = Math.floor(t/60), s = Math.floor(t%60).toString().padStart(2,'0');
   return `${m}:${s}`;
 }
 
-/* ============================
-   Pause on tab hidden
-   ============================ */
+/* ---------- Autopause on tab hidden ---------- */
 document.addEventListener('visibilitychange', ()=>{
   if(document.hidden && !audio.paused){
     audio.pause();
@@ -300,9 +283,7 @@ document.addEventListener('visibilitychange', ()=>{
   }
 });
 
-/* ============================
-   Device toggle (PC / Phone) with persistence
-   ============================ */
+/* ---------- Device toggle (pc / phone) with persistence ---------- */
 const DEVICE_KEY = 'evr_device_mode_v1';
 function applyDevice(device){
   if(device === 'phone') document.body.classList.add('device-phone');
@@ -314,12 +295,10 @@ function applyDevice(device){
 }
 document.getElementById('btn-pc').addEventListener('click', ()=> applyDevice('pc'));
 document.getElementById('btn-phone')?.addEventListener('click', ()=> applyDevice('phone'));
-const saved = localStorage.getItem(DEVICE_KEY) || (window.innerWidth <= 480 ? 'phone' : 'pc');
-applyDevice(saved);
+const savedDevice = localStorage.getItem(DEVICE_KEY) || (window.innerWidth <= 480 ? 'phone' : 'pc');
+applyDevice(savedDevice);
 
-/* ============================
-   Snow canvas (lightweight)
-   ============================ */
+/* ---------- Snow canvas ---------- */
 (function snow(){
   const canvas = document.getElementById('snow');
   if(!canvas) return;
@@ -350,9 +329,7 @@ applyDevice(saved);
   frame();
 })();
 
-/* ============================
-   Accessibility: allow Enter/Space to trigger overlay
-   ============================ */
+/* ---------- accessibility: overlay keyboard ---------- */
 document.addEventListener('DOMContentLoaded', ()=>{
   overlay.addEventListener('keydown', e => {
     if(e.key === 'Enter' || e.key === ' ') overlay.dispatchEvent(new PointerEvent('pointerdown'));
