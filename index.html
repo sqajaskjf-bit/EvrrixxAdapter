@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Evrrixx | Bio</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/a54d2cbf95.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
     </div>
 
     <div class="player" id="player">
-      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover">
+      <img src="https://images.genius.com/58bde3f707f18fb105b26ee786f24bad.1000x1000x1.png" alt="song cover" class="song-cover" id="song-cover">
       <div class="song-info">
         <div class="song-title">baby cute — универ</div>
         <div class="progress"><div class="bar" id="progress-bar"></div></div>
@@ -48,7 +48,9 @@
     const progressBar = document.getElementById('progress-bar');
     const currentTimeEl = document.getElementById('current-time');
     const totalTimeEl = document.getElementById('total-time');
+    const cover = document.getElementById('song-cover');
 
+    // показать сайт и начать песню
     overlay.addEventListener('click', () => {
       overlay.style.opacity = '0';
       setTimeout(() => overlay.style.display = 'none', 800);
@@ -56,26 +58,32 @@
       audio.play();
       player.classList.add('playing');
       playBtn.classList.replace('fa-play', 'fa-pause');
+      cover.classList.add('rotate');
     });
 
+    // play/pause
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
         playBtn.classList.replace('fa-play', 'fa-pause');
         player.classList.add('playing');
+        cover.classList.add('rotate');
       } else {
         audio.pause();
         playBtn.classList.replace('fa-pause', 'fa-play');
         player.classList.remove('playing');
+        cover.classList.remove('rotate');
       }
     });
 
+    // загрузка данных о длительности
     audio.addEventListener('loadedmetadata', () => {
       const totalMinutes = Math.floor(audio.duration / 60);
       const totalSeconds = Math.floor(audio.duration % 60);
       totalTimeEl.textContent = `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
     });
 
+    // обновление времени и прогрессбара
     audio.addEventListener('timeupdate', () => {
       const progress = (audio.currentTime / audio.duration) * 100;
       progressBar.style.width = `${progress}%`;
@@ -99,5 +107,15 @@
     setInterval(createSnowflake, 200);
   </script>
 
+  <style>
+    /* добавляем вращение обложки */
+    .rotate {
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </body>
 </html>
